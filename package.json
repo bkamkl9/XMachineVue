@@ -17,7 +17,6 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.0",
     "@types/node": "^18.15.13",
-    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-typescript-paths": "^1.4.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.2",
