@@ -2,14 +2,9 @@ import { defineConfig } from "vite";
 import { resolve } from "node:path";
 import typescript from "@rollup/plugin-typescript";
 import { typescriptPaths } from "rollup-plugin-typescript-paths";
-import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
-  plugins: [
-    viteStaticCopy({
-      targets: [{ src: "README.md", dest: "." }],
-    }),
-  ],
+  plugins: [],
   build: {
     minify: true,
     lib: {
