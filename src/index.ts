@@ -1,56 +1,74 @@
-import { reactive, ref } from "vue";
+import { reactive, ref } from 'vue'
 
-type KeysOfUnion<T> = T extends T ? keyof T : never;
+type ActionCTX<T> = {
+  state: T
+  changeState: ReturnType<typeof createMachine>['changeState']
+  dispatch: ReturnType<typeof createMachine>['dispatch']
+}
 
-type MachineActions<T> = {
+type Action<T> = (this: ActionCTX<T>, ...args: any[]) => any
+
+type StateDefinition<T> = {
   [state: string]: {
-    onEnter?: (this: MachineContext<T>) => any;
-    onLeave?: (this: MachineContext<T>) => any;
-    [action: string]:
-      | ((this: MachineContext<T>, ...args: any[]) => any)
-      | undefined;
-  };
-};
+    onEnter?: (this: ActionCTX<T>) => any
+    onLeave?: (this: ActionCTX<T>) => any
+    [action: string]: Action<T> | undefined
+  }
+}
 
-type MachineContext<T> = {
-  state: T;
-  changeState: (state: string) => void;
-  dispatch: (name: string, ...args: any[]) => void;
-};
+/**
+ * Creates new state machine
+ * @param schema - schema of state machine with reactive data.
+ * @returns state - reactive state
+ * @returns current - ref value of current state
+ * @returns dispatch - function used for calling actions
+ * @returns changeState - function used for changing state
+ */
+export function createMachine<T extends {}, K extends StateDefinition<T>>(schema: { state: () => T; actions: K }) {
+  type STATES = keyof K
+  type ACTION<S> = S extends string ? keyof K[S] : keyof K[string]
 
-export function createMachine<
-  T extends {},
-  A extends MachineActions<T>
->(schema: { state: () => T; actions: A }) {
-  const currentState = ref("");
-  const reactiveState = reactive({ ...schema.state() }) as T;
+  const current = ref('')
+  const state = reactive({ ...schema.state() }) as T
+  const actionCTX = { dispatch, state, changeState }
 
-  type States = keyof A;
+  /**
+   * Changes state of state machine
+   * @param state - state id (eg. "INITIAL")
+   */
+  function changeState(state: STATES) {
+    const id = state as string
+    const exists = schema.actions[id]
+    const previous = current.value
 
-  function changeState(state: States) {
-    const thisCtx = { state: reactiveState, dispatch, changeState };
-    schema.actions[currentState.value]?.onLeave?.call(thisCtx as any);
-    currentState.value = state as string;
-    schema.actions[state]?.onEnter?.call(thisCtx as any);
+    if (!exists) throw new Error(`state "${id}" is not defined`)
+
+    schema.actions[previous]?.onLeave?.call(actionCTX)
+    current.value = id
+    schema.actions[id]?.onEnter?.call(actionCTX)
   }
 
-  function dispatch<Action extends KeysOfUnion<A[States]>>(
-    actionName: Action extends string ? Action : never,
-    ...args: any[]
-  ) {
-    const action = schema.actions[currentState.value][actionName as string];
-    if (!action) throw new Error("Forbidden action!");
+  /**
+   * Executes action. For better TS support provide string literal with state name in generic.
+   * @param action - action name
+   * @param args - action arguments
+   */
+  function dispatch<STATE extends STATES>(action: ACTION<STATE>, ...args: any[]) {
+    const name = action as string
+    const state = current.value as string
+    const method = schema.actions[state][name]
+    const exists = typeof method === 'function'
+    const error = `Action "${name}" don't exists in state "${state}"`
 
-    return action.call(
-      { state: reactiveState, dispatch: dispatch as any, changeState },
-      ...args
-    );
+    if (!exists) throw new Error(error)
+
+    method.call(actionCTX, ...args)
   }
 
   return {
-    current: currentState,
-    state: reactiveState,
+    current,
+    state,
     dispatch,
     changeState,
-  };
+  }
 }

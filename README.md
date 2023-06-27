@@ -1,8 +1,8 @@
 ### XMachineVue
 
 XMachineVue is a lightweight npm package that helps implement state machines
-with a pinia-like structure. It has basic TypeScript support and an intuitive
-structure.
+with a pinia-like structure. It has basic TypeScript support and it is very
+intuitive.
 
 #### Getting started
 
@@ -12,12 +12,20 @@ To install XMachineVue, use the package manager of your choice:
 npm install xmachinevue
 ```
 
+```bash
+yarn install xmachinevue
+```
+
+```bash
+pnpm install xmachinevue
+```
+
 #### Documentation
 
 1. **Creating new machine** To create a new state machine, import the
-   `createMachine` function from `xmachinevue`. Provide an object with two
-   parameters in the function argument: state, which is a function that returns
-   an object, and actions, which you can later use to define states for your
+   `createMachine` function from `xmachinevue`. In the in the function argument
+   provide an object with two keys: state, which is a function that returns an
+   object, and actions, which you can later use to define states for your
    machine.
 
    ```typescript
@@ -34,36 +42,38 @@ npm install xmachinevue
 1. **States** Let's create a simple state machine that creates a counter which
    will finish its job when the count is equal to 10. In the actions object, you
    can define different states. We will define `INITIAL` and `FINISHED`. In
-   these states, you can define any methods that will be available only if the
-   current machine state is equal to the state name.
+   these states, you can define any methods that will be available only if
+   machine is in current state mode.
 2. **The "this" keyword** Using the this keyword in your actions, you can access
-   the reactive state object that you define in the state function, dispatch
+   the reactive state object that you defined in the state function, dispatch
    other actions, or change current state of the machine.
    - `this.state.counter`
    - `this.dispatch(action: string, ...args: any[])`
    - `this.changeState(state: string)`
-   ```typescript
-   export const stateMachine = createMachine({
-     state: () => ({
-       counter: 0,
-       finished: false,
-     }),
-     actions: {
-       INITIAL: {
-         increment() {
-           this.state.counter++;
-           if (this.state.counter === 10) this.changeState("FINISHED");
-         },
-       },
-       FINISHED: {
-         reset() {
-           this.state.counter = 0;
-           this.changeState("INITIAL");
-         },
-       },
-     },
-   });
-   ```
+     <br />
+
+```typescript
+export const stateMachine = createMachine({
+  state: () => ({
+    counter: 0,
+    finished: false,
+  }),
+  actions: {
+    INITIAL: {
+      increment() {
+        this.state.counter++;
+        if (this.state.counter === 10) this.changeState("FINISHED");
+      },
+    },
+    FINISHED: {
+      reset() {
+        this.state.counter = 0;
+        this.changeState("INITIAL");
+      },
+    },
+  },
+});
+```
 
 #### 
 
@@ -120,4 +130,25 @@ npm install xmachinevue
        },
      },
    });
+   ```
+
+4. **State machine instance** When calling `createMachine` 4 things are
+   returned.
+   <br/>
+   ```typescript
+   const machine = createMachine({ ... })
+
+   /* object with reactive state */
+   machine.state
+
+   /* ref containg string with current state */
+   machine.current
+
+   /* method used to execute actions defined in states */
+   machine.dispatch('actionName')
+   // or
+   machine.dispatch<'STATE'>('actionName')
+
+   /* method used to change state */
+   machine.changeState('stateName')
    ```
