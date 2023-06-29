@@ -1,80 +1,74 @@
 import { reactive, ref } from 'vue'
+import type { Ref } from 'vue'
 
-type ActionCTX<T> = {
-  state: T
-  changeState: ReturnType<typeof createMachine>['changeState']
-  dispatch: ReturnType<typeof createMachine>['dispatch']
-}
-
-type Action<T> = (this: ActionCTX<T>, ...args: any[]) => any
-
-type StateDefinition<T> = {
+type SCHEMA = {
   [state: string]: {
-    onEnter?: (this: ActionCTX<T>) => any
-    onLeave?: (this: ActionCTX<T>) => any
-    [action: string]: Action<T> | undefined
+    [action: string]: (this: any, ...args: any[]) => any
   }
 }
 
-/**
- * Creates new state machine
- * @param schema - schema of state machine with reactive data.
- * @returns state - reactive state
- * @returns current - ref value of current state
- * @returns dispatch - function used for calling actions
- * @returns changeState - function used for changing state
- */
-export function createMachine<T extends {}, K extends StateDefinition<T>>(schema: { state: () => T; actions: K }) {
-  type STATES = keyof K
-  type ACTION<S> = S extends string ? keyof K[S] : keyof K[string]
+export function createMachine<T extends SCHEMA, K extends {}>(schema: {
+  state: () => K
+  actions: T
+}) {
+  const reactiveState = reactive({ state: schema.state() })
+  const currentState = ref<keyof T>()
 
-  const current = ref('')
-  const state = reactive({ ...schema.state() }) as T
-  const actionCTX = { dispatch, state, changeState }
+  function changeState(state: keyof T & string) {
+    const exits = Object.keys(schema.state).some(
+      (statekey) => statekey === state
+    )
+    if (!exits) throw new Error(`State ${state} don't exists.`)
 
-  /**
-   * Changes state of state machine
-   * @param state - state id (eg. "INITIAL")
-   */
-  function changeState(state: STATES) {
-    const id = state as string
-    const exists = schema.actions[id]
-    const previous = current.value
-
-    if (!exists) throw new Error(`state "${id}" is not defined`)
-
-    schema.actions[previous]?.onLeave?.call(actionCTX as ActionCTX<T>)
-    current.value = id
-    schema.actions[id]?.onEnter?.call(actionCTX as ActionCTX<T>)
+    if (currentState.value) {
+      schema.actions[currentState.value]?.onLeave()
+    }
+    currentState.value = state
+    schema.actions[state]?.onEnter()
   }
 
-  /**
-   * Executes action. For better TS support provide string literal with state name in generic.
-   * @param action - action name
-   * @param args - action arguments
-   */
-  function dispatch<STATE extends STATES>(
-    action: ACTION<STATE> extends keyof K[STATE] ? ACTION<STATE> : string,
-    ...args: Parameters<
-      K[STATE][typeof action] extends (...args: any[]) => any ? K[STATE][typeof action] : (...args: any[]) => any
-    >
-  ): ReturnType<
-    K[STATE][typeof action] extends (...args: any[]) => any ? K[STATE][typeof action] : (...args: any[]) => any
-  > {
-    const name = action as string
-    const state = current.value as string
-    const method = schema.actions[state][name]
-    const exists = typeof method === 'function'
-    const error = `Action "${name}" don't exists in state "${state}"`
+  function from<STATE extends keyof T & string>(state: STATE) {
+    const exits = Object.keys(schema.state).some(
+      (statekey) => statekey === state
+    )
+    if (!exits) throw new Error(`State ${state} don't exists.`)
 
-    if (!exists) throw new Error(error)
-    return method.call(actionCTX as ActionCTX<T>, ...args) as any
+    function execute<ACTION extends keyof T[STATE] & string>(
+      action: ACTION,
+      ...args: Parameters<T[STATE][ACTION]>
+    ) {
+      const method = schema.actions[state][action]
+      if (typeof method !== 'function')
+        throw new Error(`Action ${action} don't exists in state ${state}`)
+      return method(...args) as ReturnType<T[STATE][ACTION]>
+    }
+
+    return {
+      execute,
+    }
+  }
+
+  function resetReactive(state?: keyof T & string) {
+    ;(reactiveState.state as K) = schema.state()
+    if (state) changeState(state)
   }
 
   return {
-    current,
-    state,
-    dispatch,
+    from,
+    state: reactiveState.state,
+    current: currentState as Readonly<Ref<keyof T>>,
     changeState,
+    resetReactive,
   }
 }
+
+const x = createMachine({
+  state: () => ({ hello: 1 }),
+  actions: {
+    INITIAL: {
+      helloworld() {},
+    },
+  },
+})
+
+x.resetReactive()
