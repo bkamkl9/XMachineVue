@@ -43,9 +43,9 @@ export function createMachine<T extends {}, K extends StateDefinition<T>>(schema
 
     if (!exists) throw new Error(`state "${id}" is not defined`)
 
-    schema.actions[previous]?.onLeave?.call(actionCTX)
+    schema.actions[previous]?.onLeave?.call(actionCTX as ActionCTX<T>)
     current.value = id
-    schema.actions[id]?.onEnter?.call(actionCTX)
+    schema.actions[id]?.onEnter?.call(actionCTX as ActionCTX<T>)
   }
 
   /**
@@ -53,7 +53,12 @@ export function createMachine<T extends {}, K extends StateDefinition<T>>(schema
    * @param action - action name
    * @param args - action arguments
    */
-  function dispatch<STATE extends STATES>(action: ACTION<STATE>, ...args: any[]) {
+  function dispatch<STATE extends STATES>(
+    action: ACTION<STATE> extends keyof K[STATE] ? ACTION<STATE> : string,
+    ...args: any[]
+  ): ReturnType<
+    K[STATE][typeof action] extends (...args: any[]) => any ? K[STATE][typeof action] : (...args: any[]) => any
+  > {
     const name = action as string
     const state = current.value as string
     const method = schema.actions[state][name]
@@ -61,8 +66,7 @@ export function createMachine<T extends {}, K extends StateDefinition<T>>(schema
     const error = `Action "${name}" don't exists in state "${state}"`
 
     if (!exists) throw new Error(error)
-
-    method.call(actionCTX, ...args)
+    return method.call(actionCTX as ActionCTX<T>, ...args) as any
   }
 
   return {
