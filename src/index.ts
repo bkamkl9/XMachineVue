@@ -1,3 +1,4 @@
+import { machine } from 'os'
 import { reactive, ref } from 'vue'
 
 type ActionCTX<T> = {
@@ -55,7 +56,9 @@ export function createMachine<T extends {}, K extends StateDefinition<T>>(schema
    */
   function dispatch<STATE extends STATES>(
     action: ACTION<STATE> extends keyof K[STATE] ? ACTION<STATE> : string,
-    ...args: any[]
+    ...args: Parameters<
+      K[STATE][typeof action] extends (...args: any[]) => any ? K[STATE][typeof action] : (...args: any[]) => any
+    >
   ): ReturnType<
     K[STATE][typeof action] extends (...args: any[]) => any ? K[STATE][typeof action] : (...args: any[]) => any
   > {
