@@ -15,9 +15,7 @@ export function createMachine<T extends SCHEMA, K extends {}>(schema: {
   const currentState = ref<keyof T>()
 
   function changeState(state: keyof T & string) {
-    const exits = Object.keys(schema.state).some(
-      (statekey) => statekey === state
-    )
+    const exits = schema.actions[state]
     if (!exits) throw new Error(`State ${state} don't exists.`)
 
     if (currentState.value) {
@@ -28,9 +26,7 @@ export function createMachine<T extends SCHEMA, K extends {}>(schema: {
   }
 
   function from<STATE extends keyof T & string>(state: STATE) {
-    const exits = Object.keys(schema.state).some(
-      (statekey) => statekey === state
-    )
+    const exits = schema.actions[state]
     if (!exits) throw new Error(`State ${state} don't exists.`)
 
     function execute<ACTION extends keyof T[STATE] & string>(
