@@ -17,7 +17,12 @@ export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, 
     if (!stateSchema) throw new Error(`${state} don't exists`)
 
     const actionArr = stateKeys.map((stateKey) => {
-      const context = { state: $state, ...stateSchema } as ThisContext<S, SS, FromState>
+      const context = {
+        state: $state,
+        ...stateSchema,
+        changeState,
+        resetState,
+      } as ThisContext<S, SS, FromState>
       return {
         [stateKey]: (...args: any) => {
           if ($current.value !== state)
@@ -39,6 +44,10 @@ export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, 
     >
   }
 
+  function resetState() {
+    recursiveReset($state, options.state())
+  }
+
   function changeState<FromState extends StatesKeys & string>(state: FromState) {
     type Hooks = { onEnter?: () => void; onLeave?: () => void }
     type CurrentState = StoreOptions<S, SS>['states'][FromState] & Hooks
@@ -46,16 +55,20 @@ export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, 
 
     const prevSchema = options.states[$current.value] as CurrentState
     const nextSchema = options.states[state] as CurrentState
-    const prevContext = { state: $state, ...prevSchema } as ThisContext<S, SS, FromState>
-    const nextContext = { state: $state, ...nextSchema } as ThisContext<S, SS, FromState>
+    const prevContext = { state: $state, ...prevSchema, changeState, resetState } as ThisContext<
+      S,
+      SS,
+      FromState
+    >
+    const nextContext = { state: $state, ...nextSchema, changeState, resetState } as ThisContext<
+      S,
+      SS,
+      FromState
+    >
 
     prevSchema?.onLeave?.call?.(prevContext)
     $current.value = state
     nextSchema?.onEnter?.call?.(nextContext)
-  }
-
-  function resetState() {
-    recursiveReset($state, options.state())
   }
 
   return {

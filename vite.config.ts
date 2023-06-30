@@ -21,6 +21,7 @@ export default defineConfig({
         typescript({
           declaration: true,
           outDir: 'dist',
+          exclude: ['src/playground.ts'],
         }),
       ],
     },

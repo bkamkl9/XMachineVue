@@ -4,10 +4,11 @@ export type ObjKeys<T> = (keyof T)[]
 
 export type StateTree = { [key: string]: any }
 
-export type ThisContext<S, SS, K extends keyof SS> = { state: S } & Omit<
-  SS[K],
-  'onEnter' | 'onLeave'
->
+export type ThisContext<S, SS, K extends keyof SS> = {
+  state: S
+  resetState: () => void
+  changeState: (state: keyof SS) => void
+} & Omit<SS[K], 'onEnter' | 'onLeave'>
 
 export type StatesTree<S, SS> = {
   [k in keyof SS]: {
