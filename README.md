@@ -22,40 +22,4 @@ pnpm install xmachinevue
 
 #### Documentation
 
-##### Creating state machine
-
-```typescript
-import { createMachine } from "xmachinevue";
-
-const MCH = createMachine({
-  state: () => ({
-    counter: 0,
-  }),
-  actions: {
-    "MORNING": {
-      onEnter() {
-        // Runs automatically on entering "MORNING" state
-        FUP.from("MORNING").execute("sayHi", "John");
-      },
-      onLeave() {
-        // Runs automatically on leaveing "MORNING" state
-        FUP.state.counter += 1;
-      },
-      sayHi(name: string) {
-        console.log("Good morning " + name + "!");
-        FUP.changeState("EVENING");
-      },
-    },
-    "EVENING": {
-      onEnter() {
-        console.log("Bye!!!");
-        FUP.from("EVENING").execute("bye");
-      },
-      bye() {
-        if (FUP.state.value === "EVENING") FUP.resetReactive("MORNING");
-        /* Resets state object and set current state to "MORNING" */
-      },
-    },
-  },
-});
-```
+TBD...

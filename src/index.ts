@@ -1,70 +1,68 @@
+import type { StateTree, StoreOptions, ThisContext, OmitThis } from './types'
+import { recursiveReset } from './utils'
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 
-type SCHEMA = {
-  [state: string]: {
-    [action: string]: (this: any, ...args: any[]) => any
-  }
-}
+export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, SS>) {
+  type StatesKeys = keyof StoreOptions<S, SS>['states']
 
-export function createMachine<T extends SCHEMA, K extends {}>(schema: {
-  state: () => K
-  actions: T
-}) {
-  const reactiveState = reactive({ state: schema.state() })
-  const currentState = ref<keyof T>()
+  const $current = ref('') as Ref<StatesKeys & string>
+  const $state = reactive({ ...options.state() })
+  const $states = new Set<StatesKeys>(Object.keys(options.states) as StatesKeys[])
 
-  function changeState(state: keyof T & string) {
-    const exits = schema.actions[state]
-    if (!exits) throw new Error(`State ${state} don't exists.`)
+  function from<FromState extends StatesKeys & string>(state: FromState) {
+    type CurrentState = StoreOptions<S, SS>['states'][FromState]
+    const stateSchema = options.states[state]
+    const stateKeys = Object.keys(stateSchema) as (keyof StoreOptions<S, SS>['states'][FromState])[]
+    if (!stateSchema) throw new Error(`${state} don't exists`)
 
-    if (currentState.value) {
-      schema.actions[currentState.value]?.onLeave()
-    }
-    currentState.value = state
-    schema.actions[state]?.onEnter()
-  }
+    const actionArr = stateKeys.map((stateKey) => {
+      const context = { state: $state, ...stateSchema } as ThisContext<S, SS, FromState>
+      return {
+        [stateKey]: (...args: any) => {
+          if ($current.value !== state)
+            throw new Error(
+              `Cannot execute function from state "${state}", current state is ${
+                $current.value ? '"' + $current.value + '"' : 'not defined'
+              }`
+            )
+          return stateSchema[stateKey].call(context, ...args)
+        },
+      }
+    })
 
-  function from<STATE extends keyof T & string>(state: STATE) {
-    const exits = schema.actions[state]
-    if (!exits) throw new Error(`State ${state} don't exists.`)
-
-    function execute<ACTION extends keyof T[STATE] & string>(
-      action: ACTION,
-      ...args: Parameters<T[STATE][ACTION]>
-    ) {
-      const method = schema.actions[state][action]
-      if (typeof method !== 'function')
-        throw new Error(`Action ${action} don't exists in state ${state}`)
-      return method(...args) as ReturnType<T[STATE][ACTION]>
-    }
-
-    return {
-      execute,
-    }
+    return Object.assign({}, ...actionArr) as Omit<
+      {
+        [k in keyof CurrentState]: OmitThis<CurrentState[k]>
+      },
+      'onEnter' | 'onLeave'
+    >
   }
 
-  function resetReactive(state?: keyof T & string) {
-    ;(reactiveState.state as K) = schema.state()
-    if (state) changeState(state)
+  function changeState<FromState extends StatesKeys & string>(state: FromState) {
+    type Hooks = { onEnter?: () => void; onLeave?: () => void }
+    type CurrentState = StoreOptions<S, SS>['states'][FromState] & Hooks
+    if (!$states.has(state)) throw new Error(`State "${state}" is not defined in the machine`)
+
+    const prevSchema = options.states[$current.value] as CurrentState
+    const nextSchema = options.states[state] as CurrentState
+    const prevContext = { state: $state, ...prevSchema } as ThisContext<S, SS, FromState>
+    const nextContext = { state: $state, ...nextSchema } as ThisContext<S, SS, FromState>
+
+    prevSchema?.onLeave?.call?.(prevContext)
+    $current.value = state
+    nextSchema?.onEnter?.call?.(nextContext)
+  }
+
+  function resetState() {
+    recursiveReset($state, options.state())
   }
 
   return {
+    $current,
+    $state,
     from,
-    state: reactiveState.state,
-    current: currentState as Readonly<Ref<keyof T>>,
+    resetState,
     changeState,
-    resetReactive,
   }
 }
-
-const x = createMachine({
-  state: () => ({ hello: 1 }),
-  actions: {
-    INITIAL: {
-      helloworld() {},
-    },
-  },
-})
-
-x.resetReactive()

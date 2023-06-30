@@ -19,7 +19,6 @@ export default defineConfig({
       },
       plugins: [
         typescript({
-          sourceMap: false,
           declaration: true,
           outDir: 'dist',
         }),
