@@ -22,6 +22,9 @@ export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, 
         ...stateSchema,
         changeState,
         resetState,
+        get $current() {
+          return $current.value
+        },
       } as ThisContext<S, SS, FromState>
       return {
         [stateKey]: (...args: any) => {
@@ -55,16 +58,24 @@ export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, 
 
     const prevSchema = options.states[$current.value] as CurrentState
     const nextSchema = options.states[state] as CurrentState
-    const prevContext = { state: $state, ...prevSchema, changeState, resetState } as ThisContext<
-      S,
-      SS,
-      FromState
-    >
-    const nextContext = { state: $state, ...nextSchema, changeState, resetState } as ThisContext<
-      S,
-      SS,
-      FromState
-    >
+    const prevContext = {
+      state: $state,
+      ...prevSchema,
+      changeState,
+      resetState,
+      get $current() {
+        return $current.value
+      },
+    } as ThisContext<S, SS, FromState>
+    const nextContext = {
+      state: $state,
+      ...nextSchema,
+      changeState,
+      resetState,
+      get $current() {
+        return $current.value
+      },
+    } as ThisContext<S, SS, FromState>
 
     prevSchema?.onLeave?.call?.(prevContext)
     $current.value = state

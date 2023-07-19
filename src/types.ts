@@ -8,6 +8,7 @@ export type ThisContext<S, SS, K extends keyof SS> = {
   state: S
   resetState: () => void
   changeState: (state: keyof SS) => void
+  $current: keyof SS
 } & Omit<SS[K], 'onEnter' | 'onLeave'>
 
 export type StatesTree<S, SS> = {
