@@ -7,10 +7,10 @@
   "keywords": [
     "vue 3",
     "state machine",
-    "state managment"
+    "state management"
   ],
   "private": false,
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
