@@ -12,19 +12,31 @@ To use xMachineVue, you can install it via npm:
 npm install xmachinevue
 ```
 
+## Changelog
+
+### 2.0.3
+
+#### Bugs:
+
+- Fixed bug in the documentation: changed `createMachine` to `defineMachine`
+
+#### Features
+
+- `changeState` method now returns the instance of the stateMachine
+
 ## Documentation
 
 ### Creating Your First State Machine
 
-To create a new state machine, import the `createMachine` function from
+To create a new state machine, import the `defineMachine` function from
 xMachineVue. Then, pass an object with two properties: `state` (a function
 returning reactive state) and `states` (an object containing different states
 and their associated methods).
 
 ```typescript
-import { createMachine } from 'xmachinevue'
+import { defineMachine } from 'xmachinevue'
 
-const machine = createMachine({
+const machine = defineMachine({
   state: () => ({ counter: 1 }),
   states: {
     INITIAL: {
@@ -45,7 +57,7 @@ const machine = createMachine({
 
 ### Switching and Accessing the Current State
 
-The `createMachine` function returns an object with various keys. To access the
+The `defineMachine` function returns an object with various keys. To access the
 current state of the machine, you can use `.$current`:
 
 ```typescript
@@ -95,7 +107,7 @@ other actions from the current state, mutate, access and reset the reactive
 state, or change to a different state:
 
 ```typescript
-createMachine({
+defineMachine({
   state: () => ({ counter: 0 }),
   states: {
     INITIAL: {
@@ -121,7 +133,7 @@ There are two types of special actions executed automatically when
 entering/leaving a state: `onEnter` and `onLeave`:
 
 ```typescript
-const machine = createMachine({
+const machine = defineMachine({
   state: () => ({/*...*/}),
   states: {
     STATE_ONE: {
