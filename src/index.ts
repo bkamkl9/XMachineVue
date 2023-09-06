@@ -80,15 +80,9 @@ export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, 
     prevSchema?.onLeave?.call?.(prevContext)
     $current.value = state
     nextSchema?.onEnter?.call?.(nextContext)
-
-    return {
-      $current,
-      $state,
-      from,
-      resetState,
-      changeState,
-    }
   }
+
+  if (options.initial) changeState(options.initial)
 
   return {
     $current,

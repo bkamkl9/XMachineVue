@@ -22,7 +22,7 @@ npm install xmachinevue
 
 #### Features
 
-- `changeState` method now returns the instance of the stateMachine
+- Added { initial: "{{state}}" } key to state machine
 
 ## Documentation
 

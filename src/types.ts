@@ -22,4 +22,5 @@ export type StatesTree<S, SS> = {
 export type StoreOptions<S, SS> = {
   state: () => S
   states: StatesTree<S, SS>
+  initial?: keyof SS & string
 }
