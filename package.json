@@ -10,7 +10,7 @@
     "state management"
   ],
   "private": false,
-  "version": "2.1.0",
+  "version": "2.1.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -24,13 +24,14 @@
   "module": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "@rollup/plugin-typescript": "^11.1.0",
-    "@types/node": "^18.15.13",
-    "tslib": "^2.5.0",
-    "typescript": "^5.1.6",
-    "vite": "^4.3.0"
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/node": "^18.18.4",
+    "prettier": "^3.0.3",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.11"
   },
   "dependencies": {
-    "vue": "^3.2.47"
+    "vue": "^3.3.4"
   }
 }
