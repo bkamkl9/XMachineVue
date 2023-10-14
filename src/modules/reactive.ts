@@ -8,3 +8,8 @@ export function recursiveReset(obj: Record<any, any>, def: Record<any, any>) {
     }
   }
 }
+
+export function resetReactive(id: string) {
+  const { reactive, initial_reactive } = window.__XMACHINE__[id]
+  recursiveReset(reactive, initial_reactive)
+}

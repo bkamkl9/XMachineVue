@@ -1,26 +1,54 @@
-export type OmitThis<T extends (...args: any) => any> = (...args: Parameters<T>) => ReturnType<T>
+import type { Ref } from 'vue'
 
-export type ObjKeys<T> = (keyof T)[]
-
-export type StateTree = { [key: string]: any }
-
-export type ThisContext<S, SS, K extends keyof SS> = {
-  state: S
-  resetState: () => void
-  changeState: (state: keyof SS) => void
-  $current: keyof SS
-} & Omit<SS[K], 'onEnter' | 'onLeave'>
-
-export type StatesTree<S, SS> = {
-  [k in keyof SS]: {
-    [ka in keyof SS[k]]: SS[k][ka] extends (...args: infer P) => infer R
-      ? (this: ThisContext<S, SS, k>, ...args: P) => R
-      : never
-  } & SS[k]
+type ActionThisActions<TStates, TStatesKey extends keyof TStates> = {
+  [TActionKey in keyof Omit<TStates[TStatesKey], '$onEnter' | '$onLeave'>]: TStates[TStatesKey][TActionKey]
 }
 
-export type StoreOptions<S, SS> = {
-  state: () => S
-  states: StatesTree<S, SS>
-  initial?: keyof SS & string
+interface ActionThis<TStates, TState> {
+  $changeState: (state: keyof TStates) => void
+  $resetReactive: () => void
+  $reactive: TState
+}
+
+export interface Schema<TStates, TState> {
+  initial: keyof TStates
+  reactive?: () => TState extends Record<string, unknown> ? TState : never
+  useLocalStorage?: boolean
+  states: {
+    [TStatesKey in keyof TStates]: {
+      [TActionsKey in keyof TStates[TStatesKey]]: TStates[TStatesKey][TActionsKey] extends (...args: infer P) => infer R
+        ? (this: ActionThis<TStates, TState> & ActionThisActions<TStates, TStatesKey>, ...args: P) => R
+        : never
+    } & TStates[TStatesKey]
+  }
+}
+
+export type ActionMethods<TStates, TState, TSchema extends Schema<TStates, TState>> = {
+  [TStatesKey in keyof TSchema['states']]: {
+    [TActionsKey in keyof TSchema['states'][TStatesKey]]: (
+      ...args: Parameters<TSchema['states'][TStatesKey][TActionsKey]>
+    ) => ReturnType<TSchema['states'][TStatesKey][TActionsKey]>
+  }
+}
+
+type UnknownSchema = {
+  [TState in string]: {
+    [TAction in string]: (...args: any) => any
+  }
+}
+
+type ReactiveState = Record<string, unknown>
+
+declare global {
+  interface Window {
+    __XMACHINE__: {
+      [key in string]: {
+        useLocalStorage: boolean
+        schema: UnknownSchema
+        initial_reactive: ReactiveState
+        reactive: ReactiveState
+        current: Ref<unknown extends string ? string : unknown>
+      }
+    }
+  }
 }
