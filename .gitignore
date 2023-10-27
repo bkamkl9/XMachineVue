@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-src/playground.ts
+src/playground*
 
 # Editor directories and files
 .vscode/*

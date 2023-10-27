@@ -5,6 +5,7 @@ import typescript from '@rollup/plugin-typescript'
 export default defineConfig({
   plugins: [],
   build: {
+    sourcemap: 'hidden',
     minify: true,
     lib: {
       entry: resolve(__dirname, './src/index.ts'),
@@ -19,6 +20,7 @@ export default defineConfig({
       },
       plugins: [
         typescript({
+          sourceMap: true,
           declaration: true,
           outDir: 'dist',
           exclude: ['src/playground.ts'],

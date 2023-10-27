@@ -1,9 +1,6 @@
 name: publish package
 
-on:
-  push:
-    branches:
-      - main
+on: [pull_request]
 
 jobs:
   build:
@@ -20,11 +17,7 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      - name: Install packages and build 🔨
-        run: pnpm install --frozen-lockfile && pnpm build
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
       - name: Run unit tests
         run: pnpm pnpm test
-      - name: publish npm package 🌎
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}

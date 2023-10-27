@@ -1,94 +1,37 @@
-import type { StateTree, StoreOptions, ThisContext, OmitThis } from './types'
-import { recursiveReset } from './utils'
-import { reactive, ref } from 'vue'
-import type { Ref } from 'vue'
+import type { Schema, ActionMethods } from './types.ts'
+import { reactive, ref, computed } from 'vue'
+import { loadStorageSnapshot } from './modules/localStorage.ts'
+import { initializeActions } from './modules/actions.ts'
+import { changeState } from './modules/states.ts'
+import { resetReactive } from './modules/reactive.ts'
 
-export function defineMachine<S extends StateTree, SS>(options: StoreOptions<S, SS>) {
-  type StatesKeys = keyof StoreOptions<S, SS>['states']
+if (!window.__XMACHINE__) window.__XMACHINE__ = {}
 
-  const $current = ref('') as Ref<StatesKeys & string>
-  const $state = reactive({ ...options.state() })
-  const $states = new Set<StatesKeys>(Object.keys(options.states) as StatesKeys[])
+export function createMachine<TStates, TState>(id: string, schema: Schema<TStates, TState>) {
+  type Schema = typeof schema
+  type Reactive = TState extends {} ? TState : undefined
+  type Actions = ActionMethods<TStates, TState, Schema>
+  type States = keyof Schema['states'] & string
 
-  function from<FromState extends StatesKeys & string>(state: FromState) {
-    type CurrentState = StoreOptions<S, SS>['states'][FromState]
-    const stateSchema = options.states[state]
-    const stateKeys = Object.keys(stateSchema) as (keyof StoreOptions<S, SS>['states'][FromState])[]
-    if (!stateSchema) throw new Error(`${state} don't exists`)
+  if (!window.__XMACHINE__[id]) {
+    window.__XMACHINE__[id] = {
+      useLocalStorage: !!schema.useLocalStorage,
+      initial_reactive: reactive({ ...schema.reactive }),
+      reactive: reactive({ ...schema.reactive }),
+      schema: schema.states,
+      current: ref(schema.initial),
+    }
 
-    const actionArr = stateKeys.map((stateKey) => {
-      const context = {
-        state: $state,
-        ...stateSchema,
-        changeState,
-        resetState,
-        get $current() {
-          return $current.value
-        },
-      } as ThisContext<S, SS, FromState>
-      return {
-        [stateKey]: (...args: any) => {
-          if ($current.value !== state)
-            throw new Error(
-              `Cannot execute function from state "${state}", current state is ${
-                $current.value ? '"' + $current.value + '"' : 'not defined'
-              }`
-            )
-          return stateSchema[stateKey].call(context, ...args)
-        },
-      }
-    })
-
-    return Object.assign({}, ...actionArr) as Omit<
-      {
-        [k in keyof CurrentState]: OmitThis<CurrentState[k]>
-      },
-      'onEnter' | 'onLeave'
-    >
+    if (schema.useLocalStorage) loadStorageSnapshot(id)
+    initializeActions(id)
+    changeState(id, schema.initial as States)
   }
-
-  function resetState() {
-    recursiveReset($state, options.state())
-  }
-
-  function changeState<FromState extends StatesKeys & string>(state: FromState) {
-    type Hooks = { onEnter?: () => void; onLeave?: () => void }
-    type CurrentState = StoreOptions<S, SS>['states'][FromState] & Hooks
-    if (!$states.has(state)) throw new Error(`State "${state}" is not defined in the machine`)
-
-    const prevSchema = options.states[$current.value] as CurrentState
-    const nextSchema = options.states[state] as CurrentState
-    const prevContext = {
-      state: $state,
-      ...prevSchema,
-      changeState,
-      resetState,
-      get $current() {
-        return $current.value
-      },
-    } as ThisContext<S, SS, FromState>
-    const nextContext = {
-      state: $state,
-      ...nextSchema,
-      changeState,
-      resetState,
-      get $current() {
-        return $current.value
-      },
-    } as ThisContext<S, SS, FromState>
-
-    prevSchema?.onLeave?.call?.(prevContext)
-    $current.value = state
-    nextSchema?.onEnter?.call?.(nextContext)
-  }
-
-  if (options.initial) changeState(options.initial)
 
   return {
-    $current,
-    $state,
-    from,
-    resetState,
-    changeState,
+    ...(window.__XMACHINE__[id].schema as Actions),
+    reactive: window.__XMACHINE__[id].reactive as Reactive,
+    changeState: (state: States) => changeState(id, state),
+    resetReactive: () => resetReactive(id),
+    current: computed(() => window.__XMACHINE__[id].current.value as States),
   }
 }
