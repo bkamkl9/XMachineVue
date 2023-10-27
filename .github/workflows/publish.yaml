@@ -20,10 +20,10 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      - name: Run unit tests
-        run: pnpm pnpm test
       - name: Install packages and build 🔨
         run: pnpm install --frozen-lockfile && pnpm build
+      - name: Run unit tests
+        run: pnpm pnpm test
       - name: publish npm package 🌎
         run: npm publish --access public
         env:
