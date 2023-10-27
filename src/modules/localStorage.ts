@@ -21,7 +21,7 @@ function replacer(_key: string, value: object) {
 }
 
 function watchStorageChanges(id: string) {
-  const watchOptions = { deep: true, flush: 'post', immediate: true } as const
+  const watchOptions = { deep: true, flush: 'sync', immediate: true } as const
   const watchSources = [window.__XMACHINE__[id].reactive, window.__XMACHINE__[id].current]
   watch(watchSources, () => saveStorageSnapshot(id), watchOptions)
 }

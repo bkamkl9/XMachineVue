@@ -11,8 +11,8 @@ interface ActionThis<TStates, TState> {
 }
 
 export interface Schema<TStates, TState> {
-  initial: keyof TStates
-  reactive?: () => TState extends Record<string, unknown> ? TState : never
+  initial: keyof TStates & string
+  reactive?: TState extends Record<string, unknown> ? TState : never
   useLocalStorage?: boolean
   states: {
     [TStatesKey in keyof TStates]: {
@@ -47,7 +47,7 @@ declare global {
         schema: UnknownSchema
         initial_reactive: ReactiveState
         reactive: ReactiveState
-        current: Ref<unknown extends string ? string : unknown>
+        current: Ref<string>
       }
     }
   }

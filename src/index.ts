@@ -14,19 +14,17 @@ export function createMachine<TStates, TState>(id: string, schema: Schema<TState
   type States = keyof Schema['states'] & string
 
   if (!window.__XMACHINE__[id]) {
-    const initReactive = reactive(schema.reactive?.() || {})
-
     window.__XMACHINE__[id] = {
       useLocalStorage: !!schema.useLocalStorage,
-      initial_reactive: initReactive,
-      reactive: initReactive,
+      initial_reactive: reactive({ ...schema.reactive }),
+      reactive: reactive({ ...schema.reactive }),
       schema: schema.states,
       current: ref(schema.initial),
     }
 
     if (schema.useLocalStorage) loadStorageSnapshot(id)
-
     initializeActions(id)
+    changeState(id, schema.initial as States)
   }
 
   return {
@@ -34,6 +32,6 @@ export function createMachine<TStates, TState>(id: string, schema: Schema<TState
     reactive: window.__XMACHINE__[id].reactive as Reactive,
     changeState: (state: States) => changeState(id, state),
     resetReactive: () => resetReactive(id),
-    current: computed(() => window.__XMACHINE__[id].current),
+    current: computed(() => window.__XMACHINE__[id].current.value as States),
   }
 }
