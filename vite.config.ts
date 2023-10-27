@@ -23,7 +23,7 @@ export default defineConfig({
           sourceMap: true,
           declaration: true,
           outDir: 'dist',
-          exclude: ['src/playground.ts'],
+          exclude: ['src/playground.ts', 'src/tests/**'],
         }),
       ],
     },

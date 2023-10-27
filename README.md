@@ -14,6 +14,9 @@ npm install xmachinevue
 
 ## Changelog
 
+### 3.0.1
+- **Bug:** Exclude tests declarations files from generating
+
 ### 3.0.0 !!! Breaking Changes !!!
 
 - **Feature:** Added `useLocalStorage` flag for preserving state and reactive object in LocalStorage
@@ -21,8 +24,8 @@ npm install xmachinevue
 
 ### 2.0.3
 
-- **Bug** Fixed bug in the documentation: changed `defineMachine` to `createMachine`
-- **Features** Added { initial: "{{state}}" } key to state machine
+- **Bug:** Fixed bug in the documentation: changed `defineMachine` to `createMachine`
+- **Feature:** Added { initial: "{{state}}" } key to state machine
 
 ## Migrating from 2.0.3 to 3.0.0
 
