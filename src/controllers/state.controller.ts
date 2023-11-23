@@ -1,14 +1,18 @@
 import { InstanceManager } from '../managers/instance.manager'
-import { Ref, ref } from 'vue'
+import { Observer } from '../utils/observer'
 
 export class StateController {
   InstanceManager: InstanceManager
   InitialState: string
-  CurrentState: Ref<string>
+  StateObserver: Observer<string>
 
   constructor(InstanceManager: InstanceManager) {
     this.InstanceManager = InstanceManager
     this.InitialState = InstanceManager.machineSchema.initial
-    this.CurrentState = ref(InstanceManager.machineSchema.initial)
+    this.StateObserver = new Observer(InstanceManager.machineSchema.initial)
+  }
+
+  public changeCurrentState(state: string) {
+    this.StateObserver.set(state)
   }
 }

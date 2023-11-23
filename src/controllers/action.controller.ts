@@ -11,13 +11,13 @@ export class ActionController {
   }
 
   private ThrowWrongStateErr(actionName: string, expectedState: string) {
-    const currentState = this.InstanceManager.StateController.CurrentState.value
+    const currentState = this.InstanceManager.StateController.StateObserver.get()
     throw new Error(`Action ${actionName} cannot be executed in ${currentState}. Expected state: ${expectedState}`)
   }
 
   private decorateWithStateGuard(method: AnyFunction, actionName: string, expectedState: string) {
     return (...args: any[]) => {
-      const currentState = this.InstanceManager.StateController.CurrentState.value
+      const currentState = this.InstanceManager.StateController.StateObserver.get()
       if (currentState !== expectedState) this.ThrowWrongStateErr(actionName, expectedState)
       return method(...args)
     }
