@@ -3,12 +3,12 @@ import { ReactiveController } from '../controllers/reactive.controller'
 import { StateController } from '../controllers/state.controller'
 
 export class InstanceManager {
-  machineSchema: {}
+  machineSchema: XMACHINEVUE.MachineSchema
   ActionController: ActionController
   ReactiveController: ReactiveController
   StateController: StateController
 
-  constructor(MachineSchema: {}) {
+  constructor(MachineSchema: XMACHINEVUE.MachineSchema) {
     this.machineSchema = MachineSchema
     this.ActionController = new ActionController(this)
     this.ReactiveController = new ReactiveController(this)
