@@ -1,11 +1,13 @@
+import { ShallowRef, shallowRef } from 'vue'
+
 type SubscribeFunction<T> = (updated: T, previous: T) => any
 
 export class Observer<T> {
   #subscribers: SubscribeFunction<T>[]
-  #target: T
+  #target: ShallowRef<T>
 
   constructor(target: T) {
-    this.#target = target
+    this.#target = shallowRef(target)
     this.#subscribers = []
   }
 
@@ -14,11 +16,11 @@ export class Observer<T> {
   }
 
   public set(value: T) {
-    this.#subscribers.forEach((callback) => callback(this.#target, value))
-    this.#target = value
+    this.#subscribers.forEach((callback) => callback(this.#target.value, value))
+    this.#target.value = value
   }
 
   public get() {
-    return this.#target
+    return this.#target.value
   }
 }
