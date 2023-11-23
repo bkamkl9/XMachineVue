@@ -1,4 +1,4 @@
-import type { AnyFunction } from './helper.types'
+import type { AnyFunction, AnyObject } from './helper.types'
 
 declare global {
   namespace XMACHINEVUE {
@@ -7,6 +7,7 @@ declare global {
     type CreateMachineReturnType = {}
     type MachineSchema = {
       initial: string
+      reactive: AnyObject
       states: {
         [state in string]: {
           [action in string]: AnyFunction
