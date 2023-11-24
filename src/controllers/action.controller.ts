@@ -10,6 +10,15 @@ export class ActionController {
     this.ActionsObject = this.createObjectOfActions()
   }
 
+  private thisContextFactory(state: string): XMACHINEVUE.ActionThisContext {
+    return {
+      $resetReactive: this.InstanceManager.ReactiveController.resetReactive,
+      $changeState: this.InstanceManager.StateController.changeCurrentState,
+      $reactive: this.InstanceManager.ReactiveController.ReactiveState,
+      ...this.ActionsObject[state],
+    }
+  }
+
   private ThrowWrongStateErr(actionName: string, expectedState: string) {
     const currentState = this.InstanceManager.StateController.StateObserver.get()
     throw new Error(`Action ${actionName} cannot be executed in ${currentState}. Expected state: ${expectedState}`)
@@ -19,7 +28,9 @@ export class ActionController {
     return (...args: any[]) => {
       const currentState = this.InstanceManager.StateController.StateObserver.get()
       if (currentState !== expectedState) this.ThrowWrongStateErr(actionName, expectedState)
-      return method(...args)
+
+      const context = this.thisContextFactory(expectedState)
+      return method.call(context, ...args)
     }
   }
 

@@ -14,4 +14,6 @@ export class InstanceManager {
     this.ReactiveController = new ReactiveController(this)
     this.StateController = new StateController(this)
   }
+
+  public resetReactive() {}
 }

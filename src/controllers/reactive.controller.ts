@@ -12,4 +12,6 @@ export class ReactiveController {
     this.InitialReactiveState = this.InstanceManager.machineSchema.reactive
     this.ReactiveState = reactive(this.InstanceManager.machineSchema.reactive)
   }
+
+  public resetReactive() {}
 }
