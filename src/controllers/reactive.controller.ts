@@ -1,16 +1,16 @@
 import { reactive } from 'vue'
-import { InstanceManager } from '../managers/instance.manager'
+import { InstanceService } from '../services/instance.service'
 import { AnyObject } from '../types/helper.types'
 
 export class ReactiveController {
-  InstanceManager: InstanceManager
+  InstanceService: InstanceService
   InitialReactiveState: AnyObject
   ReactiveState: AnyObject
 
-  constructor(InstanceManager: InstanceManager) {
-    this.InstanceManager = InstanceManager
-    this.InitialReactiveState = this.InstanceManager.machineSchema.reactive
-    this.ReactiveState = reactive(this.InstanceManager.machineSchema.reactive)
+  constructor(InstanceService: InstanceService) {
+    this.InstanceService = InstanceService
+    this.InitialReactiveState = this.InstanceService.machineSchema.reactive
+    this.ReactiveState = reactive(this.InstanceService.machineSchema.reactive)
   }
 
   public resetReactive() {}

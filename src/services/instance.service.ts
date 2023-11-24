@@ -2,7 +2,7 @@ import { ActionController } from '../controllers/action.controller'
 import { ReactiveController } from '../controllers/reactive.controller'
 import { StateController } from '../controllers/state.controller'
 
-export class InstanceManager {
+export class InstanceService {
   machineSchema: XMACHINEVUE.MachineSchema
   machineId: string
   ActionController: ActionController

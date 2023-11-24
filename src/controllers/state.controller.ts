@@ -1,15 +1,15 @@
-import { InstanceManager } from '../managers/instance.manager'
+import { InstanceService } from '../services/instance.service'
 import { Observer } from '../utils/observer'
 
 export class StateController {
-  InstanceManager: InstanceManager
+  InstanceService: InstanceService
   InitialState: string
   StateObserver: Observer<string>
 
-  constructor(InstanceManager: InstanceManager) {
-    this.InstanceManager = InstanceManager
-    this.InitialState = InstanceManager.machineSchema.initial
-    this.StateObserver = new Observer(InstanceManager.machineSchema.initial)
+  constructor(InstanceService: InstanceService) {
+    this.InstanceService = InstanceService
+    this.InitialState = InstanceService.machineSchema.initial
+    this.StateObserver = new Observer(InstanceService.machineSchema.initial)
   }
 
   public changeCurrentState(state: string) {
