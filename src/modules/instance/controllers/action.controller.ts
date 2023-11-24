@@ -1,5 +1,5 @@
-import { InstanceService } from '../services/instance.service'
-import { AnyFunction } from '../types/helper.types'
+import { InstanceService } from '../instance.service'
+import { AnyFunction } from '../../../types/helper.types'
 
 export class ActionController {
   InstanceService: InstanceService

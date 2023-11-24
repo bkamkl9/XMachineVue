@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
-import { InstanceService } from '../services/instance.service'
-import { AnyObject } from '../types/helper.types'
+import { InstanceService } from '../instance.service'
+import { AnyObject } from '../../../types/helper.types'
 
 export class ReactiveController {
   InstanceService: InstanceService

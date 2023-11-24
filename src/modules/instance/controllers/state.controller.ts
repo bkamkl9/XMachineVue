@@ -1,5 +1,5 @@
-import { InstanceService } from '../services/instance.service'
-import { Observer } from '../utils/observer'
+import { InstanceService } from '../instance.service'
+import { Observer } from '../../../utils/observer'
 
 export class StateController {
   InstanceService: InstanceService
