@@ -4,16 +4,20 @@ import { StateController } from '../controllers/state.controller'
 
 export class InstanceManager {
   machineSchema: XMACHINEVUE.MachineSchema
+  machineId: string
   ActionController: ActionController
   ReactiveController: ReactiveController
   StateController: StateController
 
-  constructor(MachineSchema: XMACHINEVUE.MachineSchema) {
+  constructor(MachineSchema: XMACHINEVUE.MachineSchema, id: string) {
     this.machineSchema = MachineSchema
     this.ActionController = new ActionController(this)
     this.ReactiveController = new ReactiveController(this)
     this.StateController = new StateController(this)
+    this.machineId = this.createMachineId(id)
   }
 
-  public resetReactive() {}
+  private createMachineId(id: string) {
+    return id
+  }
 }
