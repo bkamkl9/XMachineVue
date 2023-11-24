@@ -8,6 +8,14 @@ export class ActionController {
   constructor(InstanceManager: InstanceManager) {
     this.InstanceManager = InstanceManager
     this.ActionsObject = this.createObjectOfActions()
+    this.listenForStateChangeHooks()
+  }
+
+  private listenForStateChangeHooks() {
+    this.InstanceManager.StateController.StateObserver.subscribe((updated, previous) => {
+      if ('onLeave' in this.ActionsObject[previous]) this.ActionsObject[previous].onLeave(previous, updated)
+      if ('onEnter' in this.ActionsObject[updated]) this.ActionsObject[updated].onEnter(previous, updated)
+    })
   }
 
   private thisContextFactory(state: string): XMACHINEVUE.ActionThisContext {
