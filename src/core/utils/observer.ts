@@ -1,4 +1,4 @@
-import { ShallowRef, shallowRef } from 'vue'
+import { ShallowRef, readonly, shallowRef } from 'vue'
 
 type SubscribeFunction<T> = (updated: T, previous: T) => any
 
@@ -22,5 +22,9 @@ export class Observer<T> {
 
   public get() {
     return this.#target.value
+  }
+
+  public get value() {
+    return readonly(this.#target)
   }
 }
