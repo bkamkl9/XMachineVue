@@ -1,15 +1,26 @@
+import type { AnyFunction, AnyObject } from '../../types/helper.types'
 import { ActionController } from './controllers/action.controller'
 import { ReactiveController } from './controllers/reactive.controller'
 import { StateController } from './controllers/state.controller'
 
+type MachineSchema = {
+  initial: string
+  reactive: AnyObject
+  states: {
+    [state in string]: {
+      [action in string]: AnyFunction
+    }
+  }
+}
+
 export class InstanceService {
-  machineSchema: XMACHINEVUE.MachineSchema
+  machineSchema: MachineSchema
   machineId: string
   ActionController: ActionController
   ReactiveController: ReactiveController
   StateController: StateController
 
-  constructor(MachineSchema: XMACHINEVUE.MachineSchema, id: string) {
+  constructor(MachineSchema: MachineSchema, id: string) {
     this.machineSchema = MachineSchema
     this.ActionController = new ActionController(this)
     this.ReactiveController = new ReactiveController(this)

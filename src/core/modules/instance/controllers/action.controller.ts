@@ -1,5 +1,11 @@
 import { InstanceService } from '../instance.service'
-import { AnyFunction } from '../../../types/helper.types'
+import { AnyFunction, AnyObject } from '../../../types/helper.types'
+
+interface ActionThisContext {
+  $resetReactive: AnyFunction
+  $changeState: AnyFunction
+  $reactive: AnyObject
+}
 
 export class ActionController {
   InstanceService: InstanceService
@@ -18,7 +24,7 @@ export class ActionController {
     })
   }
 
-  private thisContextFactory(state: string): XMACHINEVUE.ActionThisContext {
+  private thisContextFactory(state: string): ActionThisContext {
     return {
       $resetReactive: this.InstanceService.ReactiveController.resetReactive,
       $changeState: this.InstanceService.StateController.changeCurrentState,

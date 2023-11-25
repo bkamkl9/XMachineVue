@@ -1,26 +1,10 @@
-import type { AnyFunction, AnyObject } from './helper.types'
+import type { AnyFunction } from './helper.types'
 
 declare global {
   namespace XMACHINEVUE {
     type ActionObjectSchema = {
       [state in string]: {
         [action in string]: AnyFunction
-      }
-    }
-
-    interface ActionThisContext {
-      $resetReactive: AnyFunction
-      $changeState: AnyFunction
-      $reactive: AnyObject
-    }
-
-    type MachineSchema = {
-      initial: string
-      reactive: AnyObject
-      states: {
-        [state in string]: {
-          [action in string]: AnyFunction
-        }
       }
     }
 
