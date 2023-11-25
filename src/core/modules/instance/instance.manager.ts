@@ -15,6 +15,6 @@ export class InstanceManager {
       this.InstanceRegistry.push({ service, id })
       return service
     }
-    return this.InstanceRegistry[InstanceRegistryIndex]
+    return this.InstanceRegistry[InstanceRegistryIndex].service
   }
 }
