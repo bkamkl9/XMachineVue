@@ -18,15 +18,3 @@ export function createMachine<Reactive extends AnyObject, Schema extends {}>(
     ...schema.states,
   }
 }
-
-const type = createMachine('machine-id', {
-  initial: 'HELLO',
-  reactive: {},
-  states: {
-    HELLO: {
-      hello(hello: string) {
-        return 'hello' + hello
-      },
-    },
-  },
-})
