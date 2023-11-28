@@ -1,6 +1,7 @@
 import { reactive } from 'vue'
 import { InstanceService } from '../instance.service'
 import { AnyObject } from '../../../types/helper.types'
+import { recursiveReassign } from '../../../utils/object'
 
 export class ReactiveController {
   InstanceService: InstanceService
@@ -13,5 +14,7 @@ export class ReactiveController {
     this.ReactiveState = reactive(this.InstanceService.machineSchema.reactive)
   }
 
-  public resetReactive() {}
+  public resetReactive() {
+    recursiveReassign(this.ReactiveState, this.InitialReactiveState)
+  }
 }
