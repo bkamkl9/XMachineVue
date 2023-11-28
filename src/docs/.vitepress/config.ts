@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  base: '/XMachineVue/',
   title: 'XMachineVue',
   description: 'Reactive store combined with state machine for Vue 3',
   themeConfig: {
