@@ -8,7 +8,7 @@ declare global {
       }
     }
 
-    interface MachineTemplate<R, S extends ActionObjectSchema> {
+    interface MachineTemplate<R, S> {
       initial: keyof S
       reactive?: R
       states: {

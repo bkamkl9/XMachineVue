@@ -7,7 +7,7 @@ export type RemoveThis<S> = {
     [action in keyof Omit<S[state], '$onEnter' | '$onLeave'>]: S[state][action] extends (
       ...args: infer Args
     ) => infer ReturnValue
-      ? (this: any, ...args: Args) => ReturnValue
+      ? (...args: Args) => ReturnValue
       : never
   }
 }
