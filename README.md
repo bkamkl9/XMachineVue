@@ -8,5 +8,5 @@ To use xMachineVue, you can install it via npm:
 npm install xmachinevue
 ```
 
-- Documentation: 
-- Changelog: 
+- Documentation: https://kamilbartczak03.github.io/XMachineVue/pages/installation.html
+- Changelog: https://kamilbartczak03.github.io/XMachineVue/pages/changelog.html
