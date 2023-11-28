@@ -1,25 +1,12 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
   name: "XMachineVue"
-  text: "Reactive store combined with state machine for Vue 3"
-  tagline: My great project tagline
+  tagline: "Elevate Your Vue 3 Experience with a Reactive Store Fused with State Machines"
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
-
-features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      text: Documentation
+      link: /pages/installation
 ---
 

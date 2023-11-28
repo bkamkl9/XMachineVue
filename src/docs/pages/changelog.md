@@ -1,4 +1,4 @@
-## Changelog
+# Changelog
 
 ### 3.0.2
 -- **Docs:** Improved README.md and documentation
