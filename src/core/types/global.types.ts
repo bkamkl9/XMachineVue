@@ -10,7 +10,7 @@ declare global {
 
     interface MachineTemplate<R, S extends ActionObjectSchema> {
       initial: keyof S
-      reactive: R
+      reactive?: R
       states: {
         [state in keyof S]: {
           [action in keyof S[state]]: S[state][action] extends (...args: infer Parameters) => infer Return
