@@ -11,3 +11,21 @@ export function recursiveReassign(obj: Record<any, any>, def: Record<any, any>) 
     }
   }
 }
+
+export function replacer(_key: string, value: object) {
+  if (value instanceof Map) {
+    return {
+      dataType: 'Map',
+      value: Array.from(value.entries()), // or with spread: value: [...value]
+    }
+  }
+
+  if (value instanceof Set) {
+    return {
+      dataType: 'Set',
+      value: Array.from(value), // or with spread: value: [...value]
+    }
+  }
+
+  return value
+}
