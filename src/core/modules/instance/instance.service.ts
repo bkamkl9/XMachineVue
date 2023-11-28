@@ -5,7 +5,7 @@ import { StateController } from './controllers/state.controller'
 
 type MachineSchema = {
   initial: string
-  reactive: AnyObject
+  reactive?: AnyObject
   states: {
     [state in string]: {
       [action in string]: AnyFunction
