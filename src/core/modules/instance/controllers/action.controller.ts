@@ -19,8 +19,8 @@ export class ActionController {
 
   private listenForStateChangeHooks() {
     this.InstanceService.StateController.StateObserver.subscribe((updated, previous) => {
-      if ('onLeave' in this.ActionsObject[previous]) this.ActionsObject[previous].onLeave(previous, updated)
-      if ('onEnter' in this.ActionsObject[updated]) this.ActionsObject[updated].onEnter(previous, updated)
+      if ('$onLeave' in this.ActionsObject[previous]) this.ActionsObject[previous]?.$onLeave?.(previous, updated)
+      if ('$onEnter' in this.ActionsObject[updated]) this.ActionsObject[updated]?.$onEnter?.(previous, updated)
     })
   }
 

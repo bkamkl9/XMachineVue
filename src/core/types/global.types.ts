@@ -19,7 +19,7 @@ declare global {
                   $resetReactive: () => void
                   $changeState: (state: keyof S) => void
                   $reactive: R
-                } & Omit<S[state], 'onEnter' | 'onLeave'>,
+                } & Omit<S[state], '$onEnter' | '$onLeave'>,
                 ...args: Parameters
               ) => Return
             : never
