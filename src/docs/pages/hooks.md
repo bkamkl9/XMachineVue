@@ -11,11 +11,11 @@ const machine =  createMachine('counter-machine', {
   initial: "INITIAL",
   state: {
     INITIAL: {
-      $onEnter() {
-        console.log('Entering state "INITIAL"')
+      $onEnter(from: string, to: string) {
+        console.log(`Entering ${to}, leaving: ${from}`)
       },
-      $onLeave() {
-        console.log('Leaving state "INITIAL"')
+      $onLeave(from: string, to: string) {
+        console.log(`Leaving ${from}, entering: ${to}`)
       }
     },
     AGREED: { /* (...) */ }
@@ -28,6 +28,6 @@ machine.changeState('AGREED')
 console output:
 
 ```bash
-> Entering state "INITIAL"
-> Leaving state "INITIAL"
+> Leaving "INITIAL", entering: "AGREED"
+> Entering "AGREED", leaving: "INITIAL"
 ```
