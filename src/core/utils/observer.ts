@@ -3,28 +3,29 @@ import { ShallowRef, readonly, shallowRef } from 'vue'
 type SubscribeFunction<T> = (updated: T, previous: T) => any
 
 export class Observer<T> {
-  #subscribers: SubscribeFunction<T>[]
-  #target: ShallowRef<T>
+  subscribers: SubscribeFunction<T>[]
+  target: ShallowRef<T>
 
   constructor(target: T) {
-    this.#target = shallowRef(target)
-    this.#subscribers = []
+    this.target = shallowRef(target)
+    this.subscribers = []
   }
 
-  public subscribe(callback: SubscribeFunction<T>) {
-    this.#subscribers.push(callback)
+  subscribe = (callback: SubscribeFunction<T>) => {
+    this.subscribers.push(callback)
   }
 
-  public set(value: T) {
-    this.#subscribers.forEach((callback) => callback(this.#target.value, value))
-    this.#target.value = value
+  set = (updated: T) => {
+    const previous = this.target.value
+    this.target.value = updated
+    this.subscribers.forEach((callback) => callback(previous, updated))
   }
 
-  public get() {
-    return this.#target.value
+  get = () => {
+    return this.target.value
   }
 
-  public get value() {
-    return readonly(this.#target)
+  value = () => {
+    return readonly(this.target)
   }
 }

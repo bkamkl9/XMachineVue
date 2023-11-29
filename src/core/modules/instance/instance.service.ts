@@ -26,9 +26,14 @@ export class InstanceService {
   constructor(MachineSchema: MachineSchema, id: string) {
     this.machineSchema = MachineSchema
     this.machineId = id
-    this.ActionController = new ActionController(this)
-    this.ReactiveController = new ReactiveController(this)
     this.StateController = new StateController(this)
+    this.ReactiveController = new ReactiveController(this)
+    this.ActionController = new ActionController(this)
     this.LocalStorageController = new LocalStorageController(this)
+
+    this.ActionController.initialize()
+    this.StateController.initialize()
+    this.ReactiveController.initialize()
+    this.LocalStorageController.initialize()
   }
 }

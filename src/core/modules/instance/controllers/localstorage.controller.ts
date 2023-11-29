@@ -10,28 +10,31 @@ export class LocalStorageController {
   constructor(InstanceService: InstanceService) {
     this.InstanceService = InstanceService
     this.localStorageId = `__XMACHINE__.ID(${InstanceService.machineId})`
-    if (InstanceService.machineSchema.useLocalStorage) {
+  }
+
+  initialize = () => {
+    if (this.InstanceService.machineSchema.useLocalStorage) {
       this.loadStorageSnapshot()
       this.watchChanges()
     }
   }
 
-  private watchChanges() {
+  watchChanges = () => {
     const watchOptions = { deep: true, flush: 'sync', immediate: true } as const
     const watchSource = this.InstanceService.ReactiveController.ReactiveState
     watch(watchSource, () => this.saveStorageSnapshot(), watchOptions)
     this.InstanceService.StateController.StateObserver.subscribe(this.saveStorageSnapshot)
   }
 
-  private saveStorageSnapshot() {
+  saveStorageSnapshot = () => {
     const reactive = this.InstanceService.ReactiveController.ReactiveState
-    const current = this.InstanceService.StateController.StateObserver.value.value
+    const current = this.InstanceService.StateController.StateObserver.target.value
     const stringified = JSON.stringify({ reactive, current }, replacer, 2)
 
     localStorage.setItem(this.localStorageId, stringified)
   }
 
-  private loadStorageSnapshot() {
+  loadStorageSnapshot = () => {
     const localStorageSnapshot = localStorage.getItem(this.localStorageId)
     if (localStorageSnapshot) {
       const localStorageSave = JSON.parse(localStorageSnapshot, replacer)

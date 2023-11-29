@@ -14,17 +14,20 @@ export class ActionController {
   constructor(InstanceService: InstanceService) {
     this.InstanceService = InstanceService
     this.ActionsObject = this.createObjectOfActions()
+  }
+
+  initialize = () => {
     this.listenForStateChangeHooks()
   }
 
-  private listenForStateChangeHooks() {
-    this.InstanceService.StateController.StateObserver.subscribe((updated, previous) => {
-      if ('$onLeave' in this.ActionsObject[previous]) this.ActionsObject[previous]?.$onLeave?.(previous, updated)
+  listenForStateChangeHooks = () => {
+    this.InstanceService.StateController.StateObserver.subscribe((previous, updated) => {
       if ('$onEnter' in this.ActionsObject[updated]) this.ActionsObject[updated]?.$onEnter?.(previous, updated)
+      if ('$onLeave' in this.ActionsObject[previous]) this.ActionsObject[previous]?.$onLeave?.(previous, updated)
     })
   }
 
-  private thisContextFactory(state: string): ActionThisContext {
+  thisContextFactory = (state: string): ActionThisContext => {
     return {
       $resetReactive: this.InstanceService.ReactiveController.resetReactive,
       $changeState: this.InstanceService.StateController.changeCurrentState,
@@ -33,23 +36,24 @@ export class ActionController {
     }
   }
 
-  private ThrowWrongStateErr(actionName: string, expectedState: string) {
+  ThrowWrongStateErr = (actionName: string, expectedState: string) => {
     const currentState = this.InstanceService.StateController.StateObserver.get()
     throw new Error(`Action ${actionName} cannot be executed in ${currentState}. Expected state: ${expectedState}`)
   }
 
-  private decorateWithStateGuard(method: AnyFunction, actionName: string, expectedState: string) {
+  decorateWithStateGuard = (method: AnyFunction, actionName: string, expectedState: string) => {
     return (...args: any[]) => {
+      const isHook = ['$onEnter', '$onLeave'].includes(actionName)
       const currentState = this.InstanceService.StateController.StateObserver.get()
-      if (currentState !== expectedState) this.ThrowWrongStateErr(actionName, expectedState)
+      if (!isHook && currentState !== expectedState) this.ThrowWrongStateErr(actionName, expectedState)
 
       const context = this.thisContextFactory(expectedState)
       return method.call(context, ...args)
     }
   }
 
-  private createObjectOfActions() {
-    let schema = structuredClone(this.InstanceService.machineSchema.states)
+  createObjectOfActions = () => {
+    let schema = { ...this.InstanceService.machineSchema.states }
     for (const state in schema) {
       for (const action in schema[state]) {
         const method = schema[state][action]

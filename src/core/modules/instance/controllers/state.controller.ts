@@ -12,7 +12,11 @@ export class StateController {
     this.StateObserver = new Observer(InstanceService.machineSchema.initial)
   }
 
-  public changeCurrentState(state: string) {
+  initialize = () => {
+    this.StateObserver.set('INITIAL')
+  }
+
+  changeCurrentState = (state: string) => {
     this.StateObserver.set(state)
   }
 }

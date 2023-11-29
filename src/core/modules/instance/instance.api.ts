@@ -11,7 +11,7 @@ export function createMachine<R, S>(id: string, schema: XMACHINEVUE.MachineTempl
   return {
     resetReactive: instanceService.ReactiveController.ReactiveState,
     changeState: instanceService.StateController.changeCurrentState,
-    currentState: instanceService.StateController.StateObserver.value as ShallowRef<KeyofStates>,
+    currentState: instanceService.StateController.StateObserver.target as ShallowRef<KeyofStates>,
     ...(schema.states as RemoveThis<S>),
   }
 }
