@@ -7,11 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node.js
 node_modules
 dist
 dist-ssr
 *.local
-src/playground*
+src/playground/*
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +24,7 @@ src/playground*
 *.njsproj
 *.sln
 *.sw?
+
+# Vitepress
+src/docs/.vitepress/dist
+src/docs/.vitepress/cache

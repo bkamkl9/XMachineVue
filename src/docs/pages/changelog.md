@@ -1,9 +1,17 @@
-## Changelog
+# Changelog
+
+### 3.1.0
+
+-- **Docs:** Created new documentation site
+-- **Deprecated** useLocalStorage has been deprecated
+-- **Code:** Rewritten core to objective modules architecture
 
 ### 3.0.2
+
 -- **Docs:** Improved README.md and documentation
 
 ### 3.0.1
+
 - **Bug:** Exclude tests declarations files from generating
 
 ### 3.0.0

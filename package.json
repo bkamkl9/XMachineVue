@@ -10,13 +10,16 @@
     "state management"
   ],
   "private": false,
-  "version": "3.0.2",
+  "version": "3.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "docs:dev": "vitepress dev src/docs",
+    "docs:build": "vitepress build src/docs",
+    "docs:preview": "vitepress preview src/docs"
   },
   "files": [
     "dist"
@@ -32,9 +35,11 @@
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
     "vite": "^4.4.11",
+    "vitepress": "1.0.0-rc.31",
     "vitest": "^0.34.6"
   },
   "dependencies": {
     "vue": "^3.3.4"
-  }
+  },
+  "packageManager": "pnpm@8.6"
 }
