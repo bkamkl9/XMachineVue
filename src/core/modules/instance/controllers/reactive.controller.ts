@@ -14,8 +14,6 @@ export class ReactiveController {
     this.ReactiveState = reactive(this.InstanceService.machineSchema?.reactive ?? {})
   }
 
-  initialize = () => {}
-
   resetReactive = () => {
     recursiveReassign(this.ReactiveState, this.InitialReactiveState)
   }

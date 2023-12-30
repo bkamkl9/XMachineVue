@@ -36,10 +36,10 @@ export class LocalStorageController {
 
   loadStorageSnapshot = () => {
     const localStorageSnapshot = localStorage.getItem(this.localStorageId)
-    if (localStorageSnapshot) {
-      const localStorageSave = JSON.parse(localStorageSnapshot, replacer)
-      this.InstanceService.StateController.changeCurrentState(localStorageSave.current)
-      recursiveReassign(this.InstanceService.ReactiveController.ReactiveState, localStorageSave.reactive)
-    }
+    if (!localStorageSnapshot) return
+
+    const localStorageSave = JSON.parse(localStorageSnapshot, replacer)
+    this.InstanceService.StateController.noEffectStateChange(localStorageSave.current)
+    recursiveReassign(this.InstanceService.ReactiveController.ReactiveState, localStorageSave.reactive)
   }
 }

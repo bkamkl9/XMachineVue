@@ -31,9 +31,7 @@ export class InstanceService {
     this.ActionController = new ActionController(this)
     this.LocalStorageController = new LocalStorageController(this)
 
-    this.ActionController.initialize()
-    this.StateController.initialize()
-    this.ReactiveController.initialize()
     this.LocalStorageController.initialize()
+    this.ActionController.listenForStateChangeHooks()
   }
 }

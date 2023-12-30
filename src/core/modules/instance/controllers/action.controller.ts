@@ -16,10 +16,6 @@ export class ActionController {
     this.ActionsObject = this.createObjectOfActions()
   }
 
-  initialize = () => {
-    this.listenForStateChangeHooks()
-  }
-
   listenForStateChangeHooks = () => {
     this.InstanceService.StateController.StateObserver.subscribe((previous, updated) => {
       if ('$onEnter' in this.ActionsObject[updated]) this.ActionsObject[updated]?.$onEnter?.(previous, updated)
