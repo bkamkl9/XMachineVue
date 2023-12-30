@@ -1,6 +1,6 @@
 # Changelog
 
-### 3.0.1
+### 3.1.0
 
 -- **Docs:** Created new documentation site
 -- **Deprecated** useLocalStorage has been deprecated
