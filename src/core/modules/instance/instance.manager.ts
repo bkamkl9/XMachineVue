@@ -15,6 +15,7 @@ export class InstanceManager {
       this.InstanceRegistry.push({ service, id })
       return service
     }
+    console.warn(`[XmachineVue] Machine with "${id}" already exist. Returned existing machine instance.`)
     return this.InstanceRegistry[InstanceRegistryIndex].service
   }
 }
