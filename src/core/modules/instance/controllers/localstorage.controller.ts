@@ -14,6 +14,9 @@ export class LocalStorageController {
 
   initialize = () => {
     if (this.InstanceService.machineSchema.useLocalStorage) {
+      console.warn(
+        '[XmachineVue] useLocalStorage is deprecated. More info: https://kamilbartczak03.github.io/XMachineVue/pages/local-storage.html',
+      )
       this.loadStorageSnapshot()
       this.watchChanges()
     }
