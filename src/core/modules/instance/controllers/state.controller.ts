@@ -13,10 +13,12 @@ export class StateController {
   }
 
   initialize = () => {
-    this.StateObserver.set('INITIAL')
+    this.StateObserver.set(this.InitialState)
   }
 
   changeCurrentState = (state: string) => {
-    this.StateObserver.set(state)
+    const { value: currentState } = this.StateObserver.value()
+    if (currentState === state) console.log(`State is already set to ${currentState}`)
+    else this.StateObserver.set(state)
   }
 }
