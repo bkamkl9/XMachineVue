@@ -10,7 +10,7 @@ export class ReactiveController {
 
   constructor(InstanceService: InstanceService) {
     this.InstanceService = InstanceService
-    this.InitialReactiveState = this.InstanceService.machineSchema?.reactive ?? {}
+    this.InitialReactiveState = structuredClone(this.InstanceService.machineSchema?.reactive ?? {})
     this.ReactiveState = reactive(this.InstanceService.machineSchema?.reactive ?? {})
   }
 
