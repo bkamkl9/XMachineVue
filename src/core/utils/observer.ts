@@ -1,6 +1,6 @@
 import { ShallowRef, readonly, shallowRef } from 'vue'
 
-type SubscribeFunction<T> = (updated: T, previous: T) => any
+type SubscribeFunction<T> = (updated: T | null, previous: T | null) => any
 
 export class Observer<T> {
   subscribers: SubscribeFunction<T>[]
@@ -18,7 +18,10 @@ export class Observer<T> {
   set = (updated: T) => {
     const previous = this.target.value
     this.target.value = updated
-    this.subscribers.forEach((callback) => callback(previous, updated))
+    this.subscribers.forEach((callback) => {
+      callback(previous, null)
+      callback(null, updated)
+    })
   }
 
   get = () => {
