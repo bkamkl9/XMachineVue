@@ -19,7 +19,6 @@ export class StateController {
   }
 
   quietChangeState = (state: string) => {
-    this.StateObserver.target.value = state
     this.StateObserver.set(state)
   }
 }
