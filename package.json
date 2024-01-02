@@ -10,7 +10,7 @@
     "state management"
   ],
   "private": false,
-  "version": "3.1.0",
+  "version": "3.1.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
