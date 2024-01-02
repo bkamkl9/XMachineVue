@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.1.1
+
+-- **Bug:** Hooks don't execute when initializing machine
+
 ### 3.1.0
 
 -- **Docs:** Created new documentation site
