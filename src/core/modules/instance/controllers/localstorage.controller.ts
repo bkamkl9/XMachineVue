@@ -42,7 +42,7 @@ export class LocalStorageController {
     if (!localStorageSnapshot) return
 
     const localStorageSave = JSON.parse(localStorageSnapshot, replacer)
-    this.InstanceService.StateController.noEffectStateChange(localStorageSave.current)
+    this.InstanceService.StateController.quietChangeState(localStorageSave.current)
     recursiveReassign(this.InstanceService.ReactiveController.ReactiveState, localStorageSave.reactive)
   }
 }

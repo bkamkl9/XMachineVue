@@ -4,12 +4,12 @@ import { Observer } from '../../../utils/observer'
 export class StateController {
   InstanceService: InstanceService
   InitialState: string
-  StateObserver: Observer<string>
+  StateObserver: Observer<string | null>
 
   constructor(InstanceService: InstanceService) {
     this.InstanceService = InstanceService
     this.InitialState = InstanceService.machineSchema.initial
-    this.StateObserver = new Observer(InstanceService.machineSchema.initial)
+    this.StateObserver = new Observer(null as string | null)
   }
 
   changeCurrentState = (state: string) => {
@@ -18,7 +18,7 @@ export class StateController {
     else this.StateObserver.set(state)
   }
 
-  noEffectStateChange = (state: string) => {
-    this.StateObserver.target.value = state
+  quietChangeState = (state: string) => {
+    this.StateObserver.set(state)
   }
 }
