@@ -4,11 +4,7 @@
     "url": "https://github.com/KamilBartczak03",
     "name": "Kamil Bartczak"
   },
-  "keywords": [
-    "vue 3",
-    "state machine",
-    "state management"
-  ],
+  "keywords": ["vue 3", "state machine", "state management"],
   "private": false,
   "version": "3.1.1",
   "type": "module",
@@ -19,11 +15,10 @@
     "test": "vitest",
     "docs:dev": "vitepress dev src/docs",
     "docs:build": "vitepress build src/docs",
-    "docs:preview": "vitepress preview src/docs"
+    "docs:preview": "vitepress preview src/docs",
+    "lint": "biome check --apply-unsafe ."
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "dist/index.js",
   "module": "dist/index.cjs",
   "types": "dist/index.d.ts",
@@ -31,6 +26,7 @@
     "@rollup/plugin-typescript": "^11.1.5",
     "@types/node": "^18.18.4",
     "jsdom": "^22.1.0",
+    "lefthook": "^1.6.9",
     "prettier": "^3.0.3",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
