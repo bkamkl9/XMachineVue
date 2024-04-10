@@ -1,12 +1,12 @@
 pre-commit:
   commands:
     check:
-      root: "../"
-      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue}"
+      root: './'
+      glob: '*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue}'
       run: npx biome check --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
 pre-push:
   commands:
     check:
-      root: "../"
-      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue}"
+      root: './'
+      glob: '*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue}'
       run: npx biome check --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
