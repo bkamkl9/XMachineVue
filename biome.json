@@ -1,0 +1,35 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "ignore": ["./dist"]
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "ignore": ["./dist"],
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noVar": "error",
+        "useConst": "error"
+      },
+      "suspicious": {
+        "noConsoleLog": "warn",
+        "noRedeclare": "error",
+        "noDoubleEquals": "error",
+        "noPrototypeBuiltins": "error"
+      },
+      "correctness": {
+        "noConstAssign": "error",
+        "noUnreachable": "error"
+      },
+      "nursery": {
+        "useSortedClasses": "error"
+      }
+    }
+  }
+}
