@@ -1,50 +1,55 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/XMachineVue/',
-  title: 'XMachineVue',
-  description: 'Reactive store combined with state machine for Vue 3',
+  base: "/XMachineVue/",
+  title: "XMachineVue",
+  description: "Reactive store combined with state machine for Vue 3",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Documentation', link: '/pages/installation' },
+      { text: "Home", link: "/" },
+      { text: "Documentation", link: "/pages/installation" },
     ],
 
     sidebar: [
       {
-        text: 'Introduction',
+        text: "Introduction",
         items: [
-          { text: 'Installation', link: '/pages/installation' },
-          { text: 'Quick start', link: '/pages/quick-start' },
+          { text: "Installation", link: "/pages/installation" },
+          { text: "Quick start", link: "/pages/quick-start" },
         ],
       },
       {
-        text: 'Essentials',
+        text: "Essentials",
         items: [
-          { text: 'States', link: '/pages/states' },
-          { text: 'Reactive state', link: '/pages/reactive-state' },
-          { text: 'Actions', link: '/pages/actions' },
-          { text: 'Hooks', link: '/pages/hooks' },
+          { text: "States", link: "/pages/states" },
+          { text: "Reactive state", link: "/pages/reactive-state" },
+          { text: "Actions", link: "/pages/actions" },
+          { text: "Hooks", link: "/pages/hooks" },
         ],
       },
       {
-        text: 'Advanced',
+        text: "Advanced",
         items: [
-          { text: 'LocalStorage', link: '/pages/local-storage' },
-          { text: 'Plugins', link: '/pages/plugins' },
+          { text: "LocalStorage", link: "/pages/local-storage" },
+          { text: "Plugins", link: "/pages/plugins" },
         ],
       },
       {
-        text: 'Guides',
+        text: "Guides",
         items: [
-          { text: 'Changelog', link: '/pages/changelog' },
-          { text: 'Migration guide', link: '/pages/migration-guide' },
+          { text: "Changelog", link: "/pages/changelog" },
+          { text: "Migration guide", link: "/pages/migration-guide" },
         ],
       },
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/KamilBartczak03/XMachineVue' }],
+    socialLinks: [
+      {
+        icon: "github",
+        link: "https://github.com/KamilBartczak03/XMachineVue",
+      },
+    ],
   },
-})
+});

@@ -3,13 +3,13 @@
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["./dist"]
+    "ignore": ["./dist", "./node_modules", "./src/docs/.vitepress"]
   },
   "organizeImports": {
     "enabled": true
   },
   "linter": {
-    "ignore": ["./dist"],
+    "ignore": ["./dist", "./node_modules", "./src/docs/.vitepress"],
     "enabled": true,
     "rules": {
       "recommended": true,
