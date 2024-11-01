@@ -1,5 +1,10 @@
 # Changelog
 
+### 3.2.0
+
+- **Feature:** Added `debug` flag to machine schema
+- **Chore:** Updated dependencies
+
 ### 3.1.1
 
 -- **Bug:** Hooks don't execute when initializing machine
