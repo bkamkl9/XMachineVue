@@ -21,7 +21,7 @@ jobs:
         with:
           version: 9
       - name: Install packages and build 🔨
-        run: pnpm install --frozen-lockfile && pnpm build
+        run: pnpm install && pnpm build
       # - name: Run unit tests
       #   run: pnpm pnpm test
       - name: publish npm package 🌎
