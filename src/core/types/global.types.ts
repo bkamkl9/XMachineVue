@@ -8,11 +8,36 @@ declare global {
       }
     }
 
-    interface MachineTemplate<R, S> {
+    interface MachineTemplate<R, S, G, C> {
       debug?: boolean
       initial: keyof S
       reactive?: R
       useLocalStorage?: boolean
+      computed?: {
+        [key in keyof C]: C[key] extends () => infer Return
+          ? (this: {
+              readonly $reactive: R
+              $resetReactive: () => void
+              $changeState: (state: keyof S) => void
+            }) => Return
+          : C[key] extends Function
+            ? C[key]
+            : never
+      }
+      global?: {
+        [key in keyof G]: G[key] extends (...args: infer Parameters) => infer Return
+          ? (
+              this: {
+                $reactive: R
+                $resetReactive: () => void
+                $changeState: (state: keyof S) => void
+              },
+              ...args: Parameters
+            ) => Return
+          : G[key] extends Function
+            ? G[key]
+            : never
+      }
       states: {
         [state in keyof S]: {
           [action in keyof S[state]]: S[state][action] extends (...args: infer Parameters) => infer Return

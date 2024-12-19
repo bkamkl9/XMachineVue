@@ -4,8 +4,10 @@ import { LocalStorageController } from './controllers/localstorage.controller'
 import { ReactiveController } from './controllers/reactive.controller'
 import { StateController } from './controllers/state.controller'
 import { DebugController } from './controllers/debug.controller'
-
-type MachineSchema = {
+import { GlobalController } from './controllers/global.controller'
+import { ComputedController } from './controllers/computed.controller'
+import type { ComputedRef } from 'vue'
+export type MachineSchema = {
   debug?: boolean
   initial: string
   reactive?: AnyObject
@@ -14,6 +16,12 @@ type MachineSchema = {
     [state in string]: {
       [action in string]: AnyFunction
     }
+  }
+  global?: {
+    [action in string]: AnyFunction
+  }
+  computed?: {
+    [action in string]: ComputedRef<any>
   }
 }
 
@@ -25,7 +33,8 @@ export class InstanceService {
   StateController: StateController
   DebugController: DebugController
   LocalStorageController: LocalStorageController
-
+  GlobalController: GlobalController
+  ComputedController: ComputedController
   constructor(MachineSchema: MachineSchema, id: string) {
     this.machineSchema = MachineSchema
     this.machineId = id
@@ -35,7 +44,11 @@ export class InstanceService {
     this.LocalStorageController = new LocalStorageController(this)
     this.DebugController = new DebugController(this)
     this.ActionController.listenForStateChangeHooks()
+    this.GlobalController = new GlobalController(this)
+    this.ComputedController = new ComputedController(this)
 
+    this.GlobalController.executeOnSchema(this.machineSchema)
+    this.ComputedController.executeOnSchema(this.machineSchema)
     if (this.machineSchema.useLocalStorage) this.LocalStorageController.initialize()
     else this.StateController.quietChangeState(this.machineSchema.initial)
   }
