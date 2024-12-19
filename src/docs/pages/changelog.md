@@ -1,5 +1,10 @@
 # Changelog
 
+### 3.3.0
+
+- **Feature:** Added global computed properties to machine instance that can be used in any state
+- **Feature:** Added global actions to machine instance that can be used in any state
+
 ### 3.2.0
 
 - **Feature:** Added `debug` flag to machine schema
