@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.3.1
+
+- **Bug:** Fixed bug with computed properties not being reactive after hot reload
+
 ### 3.3.0
 
 - **Feature:** Added global computed properties to machine instance that can be used in any state

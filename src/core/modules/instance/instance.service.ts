@@ -35,6 +35,7 @@ export class InstanceService {
   LocalStorageController: LocalStorageController
   GlobalController: GlobalController
   ComputedController: ComputedController
+
   constructor(MachineSchema: MachineSchema, id: string) {
     this.machineSchema = MachineSchema
     this.machineId = id

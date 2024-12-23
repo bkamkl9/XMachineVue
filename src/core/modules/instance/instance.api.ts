@@ -1,12 +1,11 @@
 import type { ShallowRef } from 'vue'
 import type { RemoveThis, MethodToComputed } from '../../types/helper.types'
-import { InstanceManager } from './instance.manager'
-
-const instanceManager = new InstanceManager()
+import { InstanceService } from './instance.service'
 
 export function createMachine<R, S, G, C>(id: string, schema: XMACHINEVUE.MachineTemplate<R, S, G, C>) {
   type KeyofStates = keyof (typeof schema)['states']
-  const instanceService = instanceManager.createMachine(id, schema)
+
+  const instanceService = new InstanceService(schema as any, id)
 
   return {
     resetReactive: instanceService.ReactiveController.resetReactive,
