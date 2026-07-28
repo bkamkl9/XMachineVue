@@ -1,15 +1,18 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
+  "files": {
+    "ignore": ["dist", "node_modules", "src/docs/.vitepress"]
+  },
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["./dist", "./node_modules", "./src/docs/.vitepress"]
+    "ignore": ["dist/**", "node_modules/**", "src/docs/.vitepress/**"]
   },
   "organizeImports": {
     "enabled": true
   },
   "linter": {
-    "ignore": ["./dist", "./node_modules", "./src/docs/.vitepress"],
+    "ignore": ["dist/**", "node_modules/**", "src/docs/.vitepress/**"],
     "enabled": true,
     "rules": {
       "recommended": true,

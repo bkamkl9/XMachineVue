@@ -1,39 +1,37 @@
 # Quick start
-## Import createMachine function
-To create a new state machine, import the `createMachine` function from `xmachinevue`. In the first argument, specify the ID and in the second, define the body of the machine.
 
-```typescript
-import { createMachine } from "xmachinevue"
-```
+Use a machine for a component process with mutually exclusive modes: a form, wizard, modal, upload, checkout, or async request. Keep rendering in the component and move workflow rules into a definition.
 
-## Machine structure
-The first parameter is a unique string with id of state machine. Second parameter is the body of the machine is an object with two required keys: "states" and "initial".
+```ts
+import { defineMachine, useMachine } from 'xmachinevue'
 
-States, as the name suggests, are used for defining states. The states are objects that contain functions called actions. It's very similar to the Pinia syntax. The initial is a string for specifying which state should be loaded initially.
+type Context = { accepted: boolean }
+type Event = { type: 'AGREE' } | { type: 'RESET' }
 
-```typescript
-const machine =  createMachine('agreement', {
-  initial: "INITIAL",
-  state: {
-    INITIAL: {
-      agree(name: string) {
-        this.$changeState('AGREED')
-        console.log(`${name} agreed`)
-      }
+const agreement = defineMachine<Context, Event>()({
+  id: 'agreement',
+  context: () => ({ accepted: false }),
+  initial: 'draft',
+  states: {
+    draft: {
+      on: {
+        AGREE: { target: 'accepted', actions: ({ assign }) => assign({ accepted: true }) },
+      },
     },
-    AGREED: {
-      goBack() {
-        this.$changeState('INITIAL')
-      }
-    }
-  }
+    accepted: { on: { RESET: 'draft' } },
+  },
 })
+
+const machine = useMachine(agreement)
+machine.send({ type: 'AGREE' })
 ```
 
-## Use the State Machine
-```typescript
-machine.INITIAL.agree('Bob');
-```
-In this example, the agree action is called on the initial state, triggering a state change to "AGREED" and logging a message to the console.
+`state` is a readonly Vue ref, `context` is readonly reactive data, and `send()` is the only way to move through the workflow.
 
-This is just a basic introduction to get you started with xMachineVue. Explore the documentation for more advanced features, customization options, and best practices.
+```vue
+<button :disabled="!machine.can({ type: 'AGREE' })" @click="machine.send({ type: 'AGREE' })">
+  Agree
+</button>
+
+<p v-if="machine.matches('accepted')">Accepted</p>
+```

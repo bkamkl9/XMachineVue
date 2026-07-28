@@ -1,15 +1,21 @@
 # Installation
-xMachineVue can be easily integrated into your project by following these simple installation steps. Choose your preferred package manager, whether it's npm, yarn, or pnpm, and execute the corresponding command in your terminal.
 
-using npm
+XMachineVue supports Vue 3.3+ and Node 18+. Vue is a peer dependency, so your app owns the Vue version.
+
+## npm
+
 ```zsh
 npm install xmachinevue
 ```
-using pnpm
+
+## pnpm
+
 ```zsh
 pnpm add xmachinevue
 ```
-using yarn
+
+## yarn
+
 ```zsh
 yarn add xmachinevue
 ```

@@ -4,46 +4,40 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   base: '/XMachineVue/',
   title: 'XMachineVue',
-  description: 'Reactive store combined with state machine for Vue 3',
+  description: 'Typed, component-scoped workflow machines for Vue 3',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Documentation', link: '/pages/installation' },
+      { text: 'Guides', link: '/pages/quick-start' },
     ],
 
     sidebar: [
       {
-        text: 'Introduction',
+        text: 'Start here',
         items: [
-          { text: 'Installation', link: '/pages/installation' },
           { text: 'Quick start', link: '/pages/quick-start' },
+          { text: 'Installation', link: '/pages/installation' },
         ],
       },
       {
-        text: 'Essentials',
+        text: 'Build workflows',
         items: [
-          { text: 'States', link: '/pages/states' },
-          { text: 'Reactive state', link: '/pages/reactive-state' },
-          { text: 'Actions', link: '/pages/actions' },
-          { text: 'Hooks', link: '/pages/hooks' },
-          { text: 'Computed properties', link: '/pages/global-computed' },
-          { text: 'Global actions', link: '/pages/global-actions' },
+          { text: 'Model a workflow', link: '/pages/model-a-workflow' },
+          { text: 'Async work', link: '/pages/async-work' },
+          { text: 'Vue integration', link: '/pages/vue-integration' },
         ],
       },
       {
-        text: 'Advanced',
+        text: 'Production',
         items: [
-          { text: 'LocalStorage', link: '/pages/local-storage' },
-          { text: 'Plugins', link: '/pages/plugins' },
+          { text: 'Persistence', link: '/pages/persistence' },
+          { text: 'Testing', link: '/pages/testing' },
         ],
       },
       {
-        text: 'Guides',
-        items: [
-          { text: 'Changelog', link: '/pages/changelog' },
-          { text: 'Migration guide', link: '/pages/migration-guide' },
-        ],
+        text: 'Reference',
+        items: [{ text: 'API principles', link: '/pages/api-principles' }],
       },
     ],
 

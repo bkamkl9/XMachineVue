@@ -4,32 +4,45 @@
     "url": "https://github.com/KamilBartczak03",
     "name": "Kamil Bartczak"
   },
-  "keywords": [
-    "vue 3",
-    "state machine",
-    "state management"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkamkl9/XMachineVue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bkamkl9/XMachineVue/issues"
+  },
+  "homepage": "https://bkamkl9.github.io/XMachineVue/",
+  "keywords": ["vue 3", "state machine", "state management"],
   "private": false,
-  "version": "3.3.1",
+  "version": "4.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vitepress dev src/docs",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "docs:dev": "vitepress dev src/docs",
     "docs:build": "vitepress build src/docs",
     "docs:preview": "vitepress preview src/docs",
-    "lint": "biome check --apply-unsafe ."
+    "lint": "biome check .",
+    "prepack": "pnpm build"
   },
-  "files": [
-    "dist"
-  ],
-  "main": "dist/index.js",
-  "module": "dist/index.cjs",
+  "files": ["dist"],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "sideEffects": false,
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
+    "@biomejs/biome": "^1.9.4",
     "@types/node": "^18.19.63",
     "jsdom": "^22.1.0",
     "lefthook": "^1.8.2",
@@ -38,10 +51,14 @@
     "typescript": "^5.6.3",
     "vite": "^4.5.5",
     "vitepress": "1.0.0-rc.31",
-    "vitest": "^0.34.6"
-  },
-  "dependencies": {
+    "vitest": "^0.34.6",
     "vue": "^3.5.12"
   },
-  "packageManager": "pnpm@8.6"
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@10.33.0"
 }

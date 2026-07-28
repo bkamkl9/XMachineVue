@@ -3,10 +3,9 @@ layout: home
 
 hero:
   name: "XMachineVue"
-  tagline: "Elevate Your Vue 3 Experience with a Reactive Store Fused with State Machines"
+  tagline: "Make component workflows explicit, typed, and testable."
   actions:
     - theme: brand
-      text: Documentation
-      link: /pages/installation
+      text: Quick start
+      link: /pages/quick-start
 ---
-
