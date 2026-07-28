@@ -1,11 +1,15 @@
+/** Browser-storage persistence support for machine actors. @module */
+
 import type { AnyEvent, MachinePlugin, MachineSnapshot } from "../core/types";
 
+/** The subset of the Web Storage API required by the persistence plugin. */
 export interface StorageLike {
   getItem: (key: string) => string | null;
   setItem: (key: string, value: string) => void;
   removeItem?: (key: string) => void;
 }
 
+/** Configures storage, versioning, and migration for persisted snapshots. */
 export interface PersistenceOptions<
   TContext extends object,
   TState extends string,

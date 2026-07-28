@@ -1,3 +1,5 @@
+/** Creates immutable workflow definitions and reactive actors. @module */
+
 import { computed, reactive, readonly, shallowRef } from "vue";
 import type {
   ActionMeta,
@@ -98,7 +100,8 @@ function createDefinition<
 }
 
 /**
- * Use the builder form (`defineMachine<Context, Event>()`) when you want
+ * Creates an immutable, typed workflow definition. Use the builder form
+ * (`defineMachine<Context, Event>()`) when you want
  * TypeScript to infer the exact union of declared state names.
  */
 export function defineMachine<
@@ -121,6 +124,7 @@ export function defineMachine(config?: unknown): unknown {
   return createDefinition(config as never);
 }
 
+/** Creates a reactive, independently controllable runtime actor for a machine. */
 export function createActor<
   TContext extends object,
   TEvent extends AnyEvent,

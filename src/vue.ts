@@ -1,3 +1,5 @@
+/** Vue composition and dependency-injection helpers for machine actors. @module */
+
 import {
   type ComputedRef,
   type InjectionKey,
@@ -43,6 +45,7 @@ export function createMachineKey<
   >;
 }
 
+/** Provides an actor to descendants using a typed Vue injection key. */
 export function provideMachine<
   TContext extends object,
   TEvent extends AnyEvent,
@@ -54,6 +57,7 @@ export function provideMachine<
   provide(key, actor);
 }
 
+/** Retrieves a provided actor or throws when no matching actor exists. */
 export function injectMachine<
   TContext extends object,
   TEvent extends AnyEvent,

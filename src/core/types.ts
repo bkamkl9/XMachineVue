@@ -1,18 +1,26 @@
+/** Shared type contracts for XMachineVue machine definitions, actors, and plugins. @module */
+
 import type { DeepReadonly, Ref } from "vue";
 
+/** The minimum shape of an event accepted by a machine. */
 export interface EventObject {
   type: string;
 }
 
+/** A non-specific event shape for generic machine APIs. */
 export type AnyEvent = EventObject;
+/** Extracts the string union of event type names from an event union. */
 export type EventType<TEvent extends AnyEvent> = TEvent["type"];
+/** Extracts the string union of state names from a state map. */
 export type StateValue<TStates> = Extract<keyof TStates, string>;
 
+/** An immutable view of an actor at a particular point in time. */
 export interface MachineSnapshot<TContext, TState extends string> {
   value: TState;
   context: DeepReadonly<TContext>;
 }
 
+/** Values made available to an action while a transition is being processed. */
 export interface ActionMeta<
   TContext,
   TEvent extends AnyEvent,
@@ -31,12 +39,14 @@ export interface ActionMeta<
   send: (event: TEvent) => boolean;
 }
 
+/** An effect run during a transition, state entry, or state exit. */
 export type MachineAction<
   TContext,
   TEvent extends AnyEvent,
   TState extends string,
 > = (meta: ActionMeta<TContext, TEvent, TState>) => void | Promise<void>;
 
+/** Decides whether a candidate transition may be taken. */
 export type MachineGuard<
   TContext,
   TEvent extends AnyEvent,
@@ -47,6 +57,7 @@ export type MachineGuard<
   meta: Pick<ActionMeta<TContext, TEvent, TState>, "from" | "to">,
 ) => boolean;
 
+/** An inline action, a named action, or an ordered group of actions. */
 export type ActionReference<
   TContext,
   TEvent extends AnyEvent,
@@ -56,12 +67,14 @@ export type ActionReference<
   | MachineAction<TContext, TEvent, TState>
   | Array<string | MachineAction<TContext, TEvent, TState>>;
 
+/** An inline guard or the name of a guard declared on the machine. */
 export type GuardReference<
   TContext,
   TEvent extends AnyEvent,
   TState extends string,
 > = string | MachineGuard<TContext, TEvent, TState>;
 
+/** Configures a possible transition from a state in response to an event. */
 export interface TransitionConfig<
   TContext,
   TEvent extends AnyEvent,
@@ -75,6 +88,7 @@ export interface TransitionConfig<
   description?: string;
 }
 
+/** A shorthand state target or a fully configured transition. */
 export type Transition<
   TContext,
   TEvent extends AnyEvent,
@@ -84,6 +98,7 @@ export type Transition<
   | TransitionConfig<TContext, TEvent, TState>
   | Array<TState | TransitionConfig<TContext, TEvent, TState>>;
 
+/** Values supplied to a service invoked by an active state. */
 export interface InvokeMeta<
   TContext,
   TEvent extends AnyEvent,
@@ -95,6 +110,7 @@ export interface InvokeMeta<
   state: TState;
 }
 
+/** An asynchronous or synchronous operation invoked while a state is active. */
 export type MachineService<
   TContext,
   TEvent extends AnyEvent,
@@ -102,6 +118,7 @@ export type MachineService<
   TResult = unknown,
 > = (meta: InvokeMeta<TContext, TEvent, TState>) => Promise<TResult> | TResult;
 
+/** Configures a service and the transitions taken when it settles. */
 export interface InvokeConfig<
   TContext,
   TEvent extends AnyEvent,
@@ -112,6 +129,7 @@ export interface InvokeConfig<
   onError?: TransitionConfig<TContext, AnyEvent, TState> | TState;
 }
 
+/** Defines the transitions and lifecycle effects for one machine state. */
 export interface StateConfig<
   TContext,
   TEvent extends AnyEvent,
@@ -126,11 +144,13 @@ export interface StateConfig<
   description?: string;
 }
 
+/** Maps state names to their state configuration. */
 export type StateMap<TContext, TEvent extends AnyEvent> = Record<
   string,
   StateConfig<TContext, TEvent, string>
 >;
 
+/** The declarative, typed source of truth for a workflow machine. */
 export interface MachineConfig<
   TContext extends object,
   TEvent extends AnyEvent,
@@ -151,6 +171,7 @@ export interface MachineConfig<
   >;
 }
 
+/** An immutable validated machine definition returned by `defineMachine`. */
 export interface MachineDefinition<
   TContext extends object,
   TEvent extends AnyEvent,
@@ -164,6 +185,7 @@ export interface MachineDefinition<
   >;
 }
 
+/** Describes one processed event and the snapshot it produced. */
 export interface TransitionRecord<
   TContext,
   TEvent extends AnyEvent,
@@ -176,6 +198,7 @@ export interface TransitionRecord<
   snapshot: MachineSnapshot<TContext, TState>;
 }
 
+/** Extends an actor with lifecycle hooks such as persistence and hydration. */
 export interface MachinePlugin<
   TContext extends object,
   TEvent extends AnyEvent,
@@ -186,6 +209,7 @@ export interface MachinePlugin<
   onStop?: () => void;
 }
 
+/** Optional initial context overrides and plugins used when creating an actor. */
 export interface CreateActorOptions<
   TContext extends object,
   TEvent extends AnyEvent,
@@ -195,6 +219,7 @@ export interface CreateActorOptions<
   plugins?: Array<MachinePlugin<TContext, TEvent, TState>>;
 }
 
+/** A running state-machine instance with reactive Vue state. */
 export interface MachineActor<
   TContext extends object,
   TEvent extends AnyEvent,
