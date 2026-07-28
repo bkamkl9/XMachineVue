@@ -13,8 +13,9 @@
   },
   "homepage": "https://bkamkl9.github.io/XMachineVue/",
   "keywords": ["vue 3", "state machine", "state management"],
+  "description": "Typed workflow state machines for Vue applications.",
   "private": false,
-  "version": "4.0.4",
+  "version": "4.0.5",
   "license": "MIT",
   "type": "module",
   "scripts": {
