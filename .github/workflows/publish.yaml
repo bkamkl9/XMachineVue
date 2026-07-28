@@ -27,4 +27,4 @@ jobs:
       - name: Run tests
         run: pnpm test
       - name: Publish to JSR
-        run: npx jsr publish --provenance
+        run: npx jsr publish

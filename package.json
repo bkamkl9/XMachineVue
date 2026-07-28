@@ -15,7 +15,7 @@
   "keywords": ["vue 3", "state machine", "state management"],
   "description": "Typed workflow state machines for Vue applications.",
   "private": false,
-  "version": "4.0.5",
+  "version": "4.0.6",
   "license": "MIT",
   "type": "module",
   "scripts": {
