@@ -1,0 +1,6 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@bkamkl9/xmachinevue",
+  "version": "4.0.0",
+  "exports": "./src/index.ts"
+}

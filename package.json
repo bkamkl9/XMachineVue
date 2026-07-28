@@ -26,7 +26,9 @@
     "docs:build": "vitepress build src/docs",
     "docs:preview": "vitepress preview src/docs",
     "lint": "biome check .",
-    "prepack": "pnpm build"
+    "prepack": "pnpm build",
+    "jsr:check": "pnpm dlx jsr publish --dry-run",
+    "jsr:publish": "pnpm dlx jsr publish"
   },
   "files": ["dist"],
   "main": "./dist/index.cjs",

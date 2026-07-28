@@ -50,7 +50,7 @@ export function provideMachine<
 >(
   key: InjectionKey<MachineActor<TContext, TEvent, TState>>,
   actor: MachineActor<TContext, TEvent, TState>,
-) {
+): void {
   provide(key, actor);
 }
 
@@ -58,7 +58,9 @@ export function injectMachine<
   TContext extends object,
   TEvent extends AnyEvent,
   TState extends string,
->(key: InjectionKey<MachineActor<TContext, TEvent, TState>>) {
+>(
+  key: InjectionKey<MachineActor<TContext, TEvent, TState>>,
+): MachineActor<TContext, TEvent, TState> {
   const actor = inject(key);
   if (!actor)
     throw new Error("No machine actor was provided for this injection key.");
