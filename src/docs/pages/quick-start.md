@@ -3,7 +3,7 @@
 Use a machine for a component process with mutually exclusive modes: a form, wizard, modal, upload, checkout, or async request. Keep rendering in the component and move workflow rules into a definition.
 
 ```ts
-import { defineMachine, useMachine } from 'xmachinevue'
+import { defineMachine, useMachine } from '@bkamkl9/xmachinevue'
 
 type Context = { accepted: boolean }
 type Event = { type: 'AGREE' } | { type: 'RESET' }

@@ -1,6 +1,10 @@
 name: Publish JSR package
 
-on: workflow_dispatch
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
 
 jobs:
   publish:

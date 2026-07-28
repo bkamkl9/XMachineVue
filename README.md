@@ -5,7 +5,7 @@ Typed, component-scoped workflow machines for Vue 3.
 Use XMachineVue to pull a component's process—form submission, wizard navigation, modal flow, request lifecycle, upload—from rendering code into an explicit, testable workflow. It is not a replacement for Pinia or a full statechart runtime.
 
 ```ts
-import { defineMachine, useMachine } from 'xmachinevue'
+import { defineMachine, useMachine } from '@bkamkl9/xmachinevue'
 
 type Context = { accepted: boolean }
 type Event = { type: 'AGREE' } | { type: 'RESET' }
@@ -27,7 +27,7 @@ const machine = useMachine(agreement)
 ## Installation
 
 ```bash
-pnpm add xmachinevue
+pnpm add jsr:@bkamkl9/xmachinevue
 ```
 
 Vue 3.3+ is required. See the documentation site for modeling workflows, async services, persistence, Vue subtree sharing, and testing.

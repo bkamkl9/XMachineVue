@@ -1,6 +1,11 @@
 {
   "$schema": "https://jsr.io/schema/config-file.v1.json",
   "name": "@bkamkl9/xmachinevue",
-  "version": "4.0.0",
-  "exports": "./src/index.ts"
+  "version": "4.0.1",
+  "license": "MIT",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["LICENSE", "README.md", "src/**/*.ts"],
+    "exclude": ["src/docs", "src/tests"]
+  }
 }

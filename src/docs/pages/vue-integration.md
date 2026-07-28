@@ -4,7 +4,7 @@
 
 ```vue
 <script setup lang="ts">
-import { useMachine, useSelector, createMachineKey, provideMachine, injectMachine } from 'xmachinevue'
+import { useMachine, useSelector, createMachineKey, provideMachine, injectMachine } from '@bkamkl9/xmachinevue'
 import { checkoutMachine } from './checkout.machine'
 
 const checkout = useMachine(checkoutMachine)
